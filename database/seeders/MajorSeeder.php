@@ -30,6 +30,7 @@ class MajorSeeder extends Seeder
             [
                 'name'=>'Information Security',
                 'department_id'=>1,
+                'degree'=>1,
             ],
             [
                 'name'=>'Robotics and Automation',
@@ -38,6 +39,7 @@ class MajorSeeder extends Seeder
             [
                 'name'=>'Nuclear Engineering',
                 'department_id'=>2,
+                'degree'=>1,
             ],
             [
                 'name'=>'Meteorology – Hydrology',
@@ -46,10 +48,12 @@ class MajorSeeder extends Seeder
             [
                 'name'=>'Materials Science and Nanotechnology',
                 'department_id'=>2,
+                'degree'=>2,
             ],
             [
                 'name'=>'Optics and Optoelectronic',
                 'department_id'=>2,
+                'degree'=>3,
             ],
             [
                 'name'=>'Human Resources Management',

@@ -13,6 +13,7 @@ class CreateMajorTable extends Migration
             $table->string('name',50);
             $table->text('description')->nullable();
             $table->foreignId('department_id');
+            $table->unsignedTinyInteger('degree')->default(0);
         });
     }
 
