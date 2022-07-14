@@ -16,7 +16,7 @@ class CreateLecturerTable extends Migration
             $table->date('DoB');
             $table->boolean('gender');
             $table->text('description')->nullable();
-            $table->foreignId('department_id');
+            $table->foreignId('faculty_id');
             $table->rememberToken();
         });
     }

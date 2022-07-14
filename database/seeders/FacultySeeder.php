@@ -5,11 +5,11 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class DepartmentSeeder extends Seeder
+class FacultySeeder extends Seeder
 {
     public function run()
     {
-        DB::table('departments')->insert([
+        DB::table('faculty')->insert([
             [
                 'name'=>'IAMCS',
                 'description' => 'Institute of Applied Mathematics and Computer Science - Viện Toán Ứng dụng và Khoa học Máy tính',

@@ -19,7 +19,7 @@ class LecturerFactory extends Factory
             'hashed_password'=>Hash::make('password'),
             'DoB'=>$this->faker->date($format = 'Y-m-d', $max = '-24 years'),
             'gender'=>$gender,
-            'department_id'=>$this->faker->numberBetween(1,4),
+            'faculty_id'=>$this->faker->numberBetween(1,4),
         ];
     }
 }
