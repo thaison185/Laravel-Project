@@ -17,67 +17,78 @@ class MajorSeeder extends Seeder
         DB::table('majors')->insert([
             [
                 'name'=>'Computer Science',
-                'department_id'=>1,
+                'faculty_id'=>1,
+                'degree'=>0,
             ],
             [
                 'name'=>'Software Engineering',
-                'department_id'=>1,
+                'faculty_id'=>1,
+                'degree'=>0,
             ],
             [
                 'name'=>'Applied Informatics',
-                'department_id'=>1,
+                'faculty_id'=>1,
+                'degree'=>0,
             ],
             [
                 'name'=>'Information Security',
-                'department_id'=>1,
+                'faculty_id'=>1,
                 'degree'=>1,
             ],
             [
                 'name'=>'Robotics and Automation',
-                'department_id'=>1,
+                'faculty_id'=>1,
+                'degree'=>0,
             ],
             [
                 'name'=>'Nuclear Engineering',
-                'department_id'=>2,
+                'faculty_id'=>2,
                 'degree'=>1,
             ],
             [
                 'name'=>'Meteorology – Hydrology',
-                'department_id'=>2,
+                'faculty_id'=>2,
+                'degree'=>0,
             ],
             [
                 'name'=>'Materials Science and Nanotechnology',
-                'department_id'=>2,
+                'faculty_id'=>2,
                 'degree'=>2,
             ],
             [
                 'name'=>'Optics and Optoelectronic',
-                'department_id'=>2,
+                'faculty_id'=>2,
                 'degree'=>3,
             ],
             [
                 'name'=>'Human Resources Management',
-                'department_id'=>3,
+                'faculty_id'=>3,
+                'degree'=>0,
             ],
             [
                 'name'=>'Foreign Economic Relations',
-                'department_id'=>3,
+                'faculty_id'=>3,
+                'degree'=>0,
             ],
             [
                 'name'=>'Logistics and Supply Chain Management',
-                'department_id'=>3,
+                'faculty_id'=>3,
+                'degree'=>0,
             ],
             [
                 'name'=>'Business Administration',
-                'department_id'=>3,
+                'faculty_id'=>3,
+                'degree'=>0,
             ],
             [
                 'name'=>'Marketing',
-                'department_id'=>4,
+                'faculty_id'=>4,
+                'degree'=>0,
             ],
             [
                 'name'=>'Advertising and Public Relations',
-                'department_id'=>4,
+                'faculty_id'=>4,
+                'degree'=>0,
             ],
         ]);
     }
