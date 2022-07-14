@@ -15,9 +15,9 @@ class ClassFactory extends Factory
     protected $model = Classs::class;
     public function definition()
     {
-        $academic_year = $this->faker->dateTimeBetween('-10 years','now');
-        $yy = $academic_year->format('y');
-        $YY = $academic_year->format('Y');
+        $admission_year = $this->faker->dateTimeBetween('-10 years','now');
+        $yy = $admission_year->format('y');
+        $YY = $admission_year->format('Y');
         $department = $this->faker->numberBetween(1,4);
         switch ($department){
             case 1:
@@ -36,7 +36,7 @@ class ClassFactory extends Factory
 
         return [
             'name'=>'0'. $department . ($major<10?'0'. $major : $major) . $yy . '0' . $this->faker->numberBetween(1,4),
-            'academic_year'=> $YY,
+            'admission_year'=> $YY,
             'major_id'=>$major,
         ];
     }

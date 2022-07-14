@@ -11,7 +11,7 @@ class CreateClassTable extends Migration
         Schema::create('classes', function (Blueprint $table) {
             $table->id();
             $table->string('name',30);
-            $table->string('academic_year',4);
+            $table->string('admission_year',4);
             $table->foreignId('major_id');
         });
     }
