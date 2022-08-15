@@ -14,6 +14,7 @@ class AcademicStaffSeeder extends Seeder
      */
     public function run()
     {
+        AcademicStaff::factory(1)->create(['role'=>true,]);
         AcademicStaff::factory(5)->create();
     }
 }

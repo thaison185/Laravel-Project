@@ -11,10 +11,13 @@ class CreateLecturerTable extends Migration
         Schema::create('lecturers', function (Blueprint $table) {
             $table->id();
             $table->string('email',50)->unique();
-            $table->string('hashed_password',100);
+            $table->string('password',100);
             $table->string('name',30);
             $table->date('DoB');
             $table->boolean('gender');
+            $table->string('avatar',100)->nullable();
+            $table->string('title',15)->nullable();
+            $table->text('degree')->nullable();
             $table->text('description')->nullable();
             $table->foreignId('faculty_id');
             $table->rememberToken();

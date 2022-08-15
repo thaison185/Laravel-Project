@@ -12,8 +12,10 @@ class CreateAcademicStaffTable extends Migration
         Schema::create('academic_staff', function (Blueprint $table) {
             $table->id();
             $table->string('email',50)->unique();
-            $table->string('hashed_password',100);
+            $table->string('password',100);
             $table->string('name',30);
+            $table->string('avatar',100)->nullable();
+            $table->boolean('role');
             $table->boolean('gender');
             $table->rememberToken();
         });

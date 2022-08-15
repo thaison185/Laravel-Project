@@ -20,7 +20,7 @@ class StudentFactory extends Factory
         return [
             'name'=>Arr::last(explode('. ',$this->faker->name($gen))),
             'email'=>$this->faker->unique()->safeEmail(),
-            'hashed_password'=>Hash::make('password'),
+            'password'=>Hash::make('password'),
             'DoB'=>$this->faker->date($format = 'Y-m-d', $max = '-24 years'),
             'gender'=>$gender,
             'class_id'=>$this->faker->numberBetween(1,30),

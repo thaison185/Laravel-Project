@@ -12,6 +12,7 @@ class CreateAcademicPerformanceTable extends Migration
             $table->foreignId('student_id');
             $table->foreignId('subject_id');
             $table->foreignId('lecturer_id');
+            $table->date('exam_date');
             $table->float('score');
         });
     }

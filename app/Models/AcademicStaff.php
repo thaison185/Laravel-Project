@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class AcademicStaff extends Model
+class AcademicStaff extends Authenticatable
 {
     use HasFactory;
     protected $table = 'academic_staff';

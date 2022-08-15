@@ -11,11 +11,13 @@ class CreateStudentTable extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('email',50)->unique();
-            $table->string('hashed_password',100);
+            $table->string('password',100);
             $table->string('name',30);
             $table->date('DoB');
             $table->string('phone',20);
             $table->boolean('gender');
+            $table->string('avatar',100)->nullable();
+            $table->boolean('notification')->default(true);
             $table->text('description')->nullable();
             $table->foreignId('class_id');
             $table->rememberToken();

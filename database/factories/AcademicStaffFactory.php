@@ -20,8 +20,9 @@ class AcademicStaffFactory extends Factory
         return [
             'name'=>Arr::last(explode('. ',$this->faker->name($gen))),
             'email'=>$this->faker->unique()->safeEmail(),
-            'hashed_password'=>Hash::make('password'),
+            'password'=>Hash::make('password'),
             'gender'=>$gender,
+            'role'=>$this->faker->boolean(),
         ];
     }
 }

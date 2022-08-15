@@ -12,6 +12,7 @@ class CreateMajorSubjectTable extends Migration
             $table->foreignId('major_id');
             $table->foreignId('subject_id');
             $table->unsignedTinyInteger('semester');
+            $table->integer('lecture_hour');
         });
     }
 
