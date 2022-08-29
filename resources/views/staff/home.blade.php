@@ -2,6 +2,15 @@
 
 @section('title','Dashboard')
 
+@section('section-content-class','home')
+
+@section('content-header')
+    <div class="block-header">
+        <h2>Dashboard</h2>
+        <small class="text-muted">X University Application</small>
+    </div>
+@endsection
+
 @section('content')
     <div class="row clearfix top-report">
         <x-topreportcard>
@@ -69,7 +78,7 @@
     </div>
 @endsection
 
-@section('js')
+@push('js')
     <script>
         "use strict";
         var realtime = 'on';
@@ -137,4 +146,5 @@
             return config;
         }
     </script>
-@endsection
+@endpush
+

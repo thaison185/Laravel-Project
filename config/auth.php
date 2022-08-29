@@ -42,7 +42,7 @@ return [
         ],
         'lecturer' => [
             'driver' => 'session',
-            'provider' => 'lecturers',
+            'provider' => 'lecturers.blade.php',
         ],
         'student' => [
             'driver' => 'session',
@@ -73,7 +73,7 @@ return [
             'model' => \App\Models\AcademicStaff::class,
         ],
 
-        'lecturers' => [
+        'lecturers.blade.php' => [
             'driver' => 'eloquent',
             'model' => \App\Models\Lecturer::class,
         ],

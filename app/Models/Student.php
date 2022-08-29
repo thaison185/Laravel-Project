@@ -10,4 +10,5 @@ class Student extends Authenticatable
 {
     use HasFactory;
     public $timestamps = false;
+
 }

@@ -10,4 +10,21 @@ class Lecturer extends Authenticatable
 {
     use HasFactory;
     public $timestamps = false;
+
+    public function faculty(){
+        return $this->belongsTo(Faculty::class);
+    }
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'DoB',
+        'gender',
+        'avatar',
+        'title',
+        'degree',
+        'description',
+        'faculty_id',
+    ];
 }
