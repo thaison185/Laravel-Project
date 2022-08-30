@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Staff\LecturerController;
 use App\Http\Controllers\Staff\StudentController;
+use App\Http\Controllers\Staff\StaffController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -60,6 +61,17 @@ Route::prefix('staff')->middleware('auth:staff')->name('staff.')->group(function
         Route::post('/{id}/update',[StudentController::class,'update'])->name('update');
         Route::get('import',[StudentController::class,'importIndex'])->name('import-index');
         Route::post('import',[StudentController::class,'import'])->name('import');
+    });
+
+    Route::group([
+        'as' => 'staff.',
+        'prefix' => 'staff',
+    ], static function(){
+        Route::match(['get','post'],'/',[StaffController::class,'index'])->name('all');
+        Route::get('/{id}',[StaffController::class,'profile'])->where('id', '[0-9]+')->name('one');
+        Route::get('/add',[StaffController::class,'create'])->name('create');
+        Route::post('/add',[StaffController::class,'store'])->name('store');
+        Route::post('/{id}/update',[StaffController::class,'update'])->name('update');
     });
 });
 

@@ -245,24 +245,18 @@ class LecturerController extends Controller
                 'avatar' => $avatar,
             ]);
         }
-        if(Hash::check($data['old-pass'], $target->password)){
-            $new = Hash::make($data['new-pass']);
-            try{
-                $target->update(['password'=>$new]);
-            }catch(\Throwable $exception){
-                return response()->json([
-                    'status' => 'error',
-                    'message' => $exception->getMessage(),
-                ]);
-            }
+        $new = Hash::make($data['new-pass']);
+        try{
+            $target->update(['password'=>$new]);
+        }catch(\Throwable $exception){
             return response()->json([
-                'status' => 'success',
-                'message' => 'Password has been updated successfully!',
+                'status' => 'error',
+                'message' => $exception->getMessage(),
             ]);
         }
         return response()->json([
-            'status' => 'error',
-            'message' => 'Old password is Wrong!',
+            'status' => 'success',
+            'message' => 'Password has been updated successfully!',
         ]);
     }
 }

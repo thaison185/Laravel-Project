@@ -205,6 +205,13 @@
                                                         <div class="col-12">
                                                             <div class="form-group">
                                                                 <div class="form-line">
+                                                                    <input type="password" id="old-password" class="form-control g-bg-" placeholder="Old Password" name="old-pass" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="form-group">
+                                                                <div class="form-line">
                                                                     <input type="password" class="form-control" placeholder="New Password" id="new-password" name="new-pass" required>
                                                                 </div>
                                                             </div>
@@ -357,8 +364,12 @@
 
             $('#password-form').validate({
                 rules: {
+                    'old-pass':{
+                        minlength: 8,
+                    },
                     'new-pass':{
                         minlength: 8,
+                        notEqual: '#old-password',
                     },
                     'confirm':{
                         equalTo : "#new-password",

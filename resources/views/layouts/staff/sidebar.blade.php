@@ -42,6 +42,12 @@
                         <li id="add-course"><a href="add-courses.html">Add Course</a></li>
                     </ul>
                 </li>
+                <li class="li-parent"><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-mood"></i><span>Staff</span> </a>
+                    <ul class="ml-menu">
+                        <li id="staff"><a href="{{route('staff.staff.all')}}">All Staff</a></li>
+                        <li id="add-staff"><a href="{{route('staff.students.create')}}">Add Staff</a></li>
+                    </ul>
+                </li>
                 <li class="li-parent"><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-city-alt"></i><span>Departments</span> </a>
                     <ul class="ml-menu">
                         <li id="departments"><a href="departments.html">All Departments</a></li>
