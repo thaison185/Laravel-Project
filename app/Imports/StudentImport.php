@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Imports;
+
 use App\Models\Lecturer;
+use App\Models\Student;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
@@ -18,7 +19,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class LecturersImport implements ToModel,WithHeadingRow,WithValidation,SkipsOnError,SkipsOnFailure,SkipsEmptyRows
+class StudentImport implements ToModel,WithHeadingRow,WithValidation,SkipsOnError,SkipsOnFailure,SkipsEmptyRows
 {
     use SkipsErrors,SkipsFailures,Importable;
 
@@ -33,16 +34,15 @@ class LecturersImport implements ToModel,WithHeadingRow,WithValidation,SkipsOnEr
     public function model(array $row)
     {
         ++$this->rows;
-        return new Lecturer([
+        return new Student([
             'name' => $row['name'],
             'email' => $row['email'],
             'password' => Hash::make($row['password']),
             'gender' => $row['gender'],
-            'title' => $row['title'],
-            'degree' => $row['degree'],
+            'phone' => $row['phone'],
             'DoB' => Carbon::createFromTimestamp(strtotime($row['dob']))->toDateString(),
             'description' => $row['description'],
-            'faculty_id' => $row['faculty_id'] ?? $row['faculty'],
+            'class_id' => $row['class_id'] ?? $row['class'],
         ]);
     }
 
@@ -59,13 +59,13 @@ class LecturersImport implements ToModel,WithHeadingRow,WithValidation,SkipsOnEr
                 'date',
                 function($attribute,$value,$onFailure){
                     $dob = Carbon::createFromTimestamp(strtotime($value));
-                    if(Carbon::tomorrow()->diffInYears($dob) < 21){
-                        $onFailure('New Lecturers have to be more than 22 years old');
+                    if(Carbon::tomorrow()->diffInYears($dob) < 17){
+                        $onFailure('New Lecturers have to be more than 18 years old');
                     }
                 }
             ],
-            'faculty_id' => ['required','exists:App\Models\Faculty,id'],
-            'title' => ['max:15'],
+            'class_id' => ['required','exists:App\Models\Classs,id'],
+            'phone' => ['required'],
         ];
     }
 
@@ -73,9 +73,8 @@ class LecturersImport implements ToModel,WithHeadingRow,WithValidation,SkipsOnEr
         if($this->extension != "csv" && $this->extension != "txt"){
             $data['dob'] = Date::excelToDateTimeObject($data['dob'])->format('Y-m-d');
         }else $data['dob']=Carbon::createFromTimestamp(strtotime($data['dob']))->toDateString();
-
-        if(empty($data['faculty_id'])){
-            $data['faculty_id'] = $data['faculty'];
+        if(empty($data['class_id'])){
+            $data['class_id'] = $data['class'];
         }
         return $data;
     }

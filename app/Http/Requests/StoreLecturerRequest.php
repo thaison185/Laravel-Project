@@ -32,10 +32,10 @@ class StoreLecturerRequest extends FormRequest
             'gender' => 'required|boolean',
             'DoB' => [
                 'required',
-                'date',
+                'date_format:d/m/Y',
                 function($attribute,$value,$onFailure){
                 $dob = Carbon::createFromTimestamp(strtotime($value));
-                if(Carbon::tomorrow()->diffInYears($dob) < 22){
+                if(Carbon::tomorrow()->diffInYears($dob) < 21){
                     $onFailure('New Lecturers have to be more than 22 years old');
                 }
             }],

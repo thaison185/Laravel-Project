@@ -486,7 +486,6 @@
                 const formData = new FormData(this);
                 formData.append('type','password');
                 if($(this).valid()){
-                    $('#close-').click();
                     callAJAX(actURL,formData,'pass');
                 }
             });
@@ -497,7 +496,6 @@
                 const formData = new FormData(this);
                 formData.append('type','avatar');
                 if($(this).valid()) {
-                    $('#close-ava').click();
                     callAJAX(actURL, formData,'ava');
                 }
             });

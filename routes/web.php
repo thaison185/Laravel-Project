@@ -57,6 +57,7 @@ Route::prefix('staff')->middleware('auth:staff')->name('staff.')->group(function
         Route::get('/{id}',[StudentController::class,'profile'])->where('id', '[0-9]+')->name('one');
         Route::get('/add',[StudentController::class,'create'])->name('create');
         Route::post('/add',[StudentController::class,'store'])->name('store');
+        Route::post('/{id}/update',[StudentController::class,'update'])->name('update');
         Route::get('import',[StudentController::class,'importIndex'])->name('import-index');
         Route::post('import',[StudentController::class,'import'])->name('import');
     });

@@ -37,10 +37,10 @@ class UpdateLecturerRequest extends FormRequest
             'gender' => 'required|boolean',
             'DoB' => [
                 'required',
-                'date',
+                'date_format:d/m/Y',
                 function($attribute,$value,$onFailure){
                     $dob = Carbon::createFromTimestamp(strtotime($value));
-                    if(Carbon::tomorrow()->diffInYears($dob) < 22){
+                    if(Carbon::tomorrow()->diffInYears($dob) < 21){
                         $onFailure('New Lecturers have to be more than 22 years old');
                     }
                 }],
@@ -57,8 +57,7 @@ class UpdateLecturerRequest extends FormRequest
 
     protected function password(){
         return [
-            'old-pass' => 'required|min:8',
-            'new-pass' => 'required|min:8|different:old-pass'
+            'new-pass' => 'required|min:8'
         ];
     }
 }

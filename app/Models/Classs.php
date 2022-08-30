@@ -15,4 +15,8 @@ class Classs extends Model
     }
     protected $table = 'classes';
     public $timestamps = false;
+
+    public function major(){
+        return $this->belongsTo(Major::class);
+    }
 }

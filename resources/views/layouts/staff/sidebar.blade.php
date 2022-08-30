@@ -33,6 +33,7 @@
                     <ul class="ml-menu">
                         <li id="students"><a href="{{route('staff.students.all')}}">All Students</a></li>
                         <li id="add-student"><a href="{{route('staff.students.create')}}">Add Student</a></li>
+                        <li id="import-students"><a href="{{route('staff.students.import-index')}}">Import Students</a></li>
                     </ul>
                 </li>
                 <li class="li-parent"><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-graduation-cap"></i><span>Subjects</span> </a>
