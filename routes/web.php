@@ -48,6 +48,7 @@ Route::prefix('staff')->middleware('auth:staff')->name('staff.')->group(function
         Route::post('/{id}/update',[LecturerController::class,'update'])->name('update');
         Route::get('import',[LecturerController::class,'importIndex'])->name('import-index');
         Route::post('import',[LecturerController::class,'import'])->name('import');
+        Route::post('{id}/delete',[LecturerController::class,'delete'])->name('delete');
     });
 
     Route::group([
@@ -61,6 +62,7 @@ Route::prefix('staff')->middleware('auth:staff')->name('staff.')->group(function
         Route::post('/{id}/update',[StudentController::class,'update'])->name('update');
         Route::get('import',[StudentController::class,'importIndex'])->name('import-index');
         Route::post('import',[StudentController::class,'import'])->name('import');
+        Route::post('{id}/delete',[StudentController::class,'delete'])->name('delete');
     });
 
     Route::group([
@@ -71,6 +73,7 @@ Route::prefix('staff')->middleware('auth:staff')->name('staff.')->group(function
         Route::get('/add',[StaffController::class,'create'])->name('create');
         Route::post('/add',[StaffController::class,'store'])->name('store');
         Route::post('/{id}/update',[StaffController::class,'update'])->name('update');
+        Route::post('{id}/delete',[StaffController::class,'delete'])->name('delete');
     });
 });
 

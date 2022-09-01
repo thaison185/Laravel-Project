@@ -12,7 +12,10 @@
                 </div>
 
                 <p class="text-muted">{{$title}} <br> {{$degree}}</p>
-                <a href="{{route('staff.lecturers.one',['id'=>$id])}}"  class="btn btn-raised btn-default">View Profile</a>
+                <a href="{{route('staff.lecturers.one',['id'=>$id])}}"  class="btn btn-sm btn-raised btn-info">View Profile</a>
+                @if(auth()->user()->role=='1')
+                <button data-href="{{route('staff.lecturers.delete',['id'=>$id])}}" class="btn btn-raised btn-sm btn-danger waves-effect delete-button">Delete</button>
+                @endif
             </div>
         </div>
     </div>

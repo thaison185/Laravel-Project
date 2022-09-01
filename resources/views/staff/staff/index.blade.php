@@ -65,29 +65,31 @@
             </div>
         </div>
     @endif
-    <div class="row clearfix" id="staff-all">
-        @foreach($staff as $each)
-            <x-staffcard>
-                <x-slot name="avatar">
-                    @if($each->avatar=='') {{asset('/img/staff/placeholder.jpg')}}
-                    @else {{asset('storage/'.$each->avatar)}}
-                    @endif
-                </x-slot>
-                <x-slot name="id">{{$each->id}}</x-slot>
-                <x-slot name="name">
-                    {{$each->name}}
-                </x-slot>
-                <x-slot name="email">
-                    {{$each->email}}
-                </x-slot>
-                <x-slot name="role">
-                    {{$each->role}}
-                </x-slot>
-                <x-slot name="gender">
-                    {{$each->gender}}
-                </x-slot>
-            </x-staffcard>
-        @endforeach
+    <div id="reload">
+        <div class="row clearfix" id="staff-all">
+            @foreach($staff as $each)
+                <x-staffcard>
+                    <x-slot name="avatar">
+                        @if($each->avatar=='') {{asset('/img/staff/placeholder.jpg')}}
+                        @else {{asset('storage/'.$each->avatar)}}
+                        @endif
+                    </x-slot>
+                    <x-slot name="id">{{$each->id}}</x-slot>
+                    <x-slot name="name">
+                        {{$each->name}}
+                    </x-slot>
+                    <x-slot name="email">
+                        {{$each->email}}
+                    </x-slot>
+                    <x-slot name="role">
+                        {{$each->role}}
+                    </x-slot>
+                    <x-slot name="gender">
+                        {{$each->gender}}
+                    </x-slot>
+                </x-staffcard>
+            @endforeach
+        </div>
     </div>
     <ul class="p-b-10 pagination justify-content-center" >
         {{$staff->links()}}
@@ -207,7 +209,6 @@
             });
         });
     </script>
-
     {{--    Modal   --}}
     <script>
         $('#Modal').on('show.bs.modal', function (event) {
@@ -232,7 +233,6 @@
             }
         })
     </script>
-
     {{--    Avatar upload image preview     --}}
     <script>
         /*  ==========================================
@@ -351,7 +351,7 @@
                     callAJAX(actURL, formData);
                 }
             });
-            function callAJAX(actURL,formData){
+            function callAJAX(actURL,formData=''){
                 $.ajax({
                     type: "POST",
                     url: actURL,
@@ -361,7 +361,7 @@
                         if(response.status==="success"){
                             $("#close-ava").click();
                             showNotification('g-bg-cgreen',response.message,'top','center','animated fadeInDown','animated fadeOutDown');
-                            $("#staff-all").load(document.URL+' #staff-all');
+                            $("#reload").load(document.URL+' #staff-all');
                         }else{
                             showNotification('g-bg-soundcloud',response.message,'top','center','animated zoomInDown','animated zoomOutUp');
                         }
@@ -382,7 +382,7 @@
                             }
                         }
                         else {
-                            error = response.message;
+                            error = response.responseJSON.message;
                         }
                         showNotification('g-bg-soundcloud',error,'top','center','animated zoomInDown','animated zoomOutUp');
                     },
@@ -393,6 +393,12 @@
                     async: false,
                 });
             }
+            $('.delete-button').on('click',function (){
+                const formData = new FormData();
+                formData.append('_token','{{csrf_token()}}');
+                let actURL = $(this).data('href');
+                callAJAX(actURL,formData);
+            });
         });
     </script>
 @endpush

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeleteRequest;
 use App\Http\Requests\ImportRequest;
 use App\Http\Requests\StoreStudentRequest;
 use App\Imports\StudentImport;
@@ -273,5 +274,35 @@ class StudentController extends Controller
             'status' => 'success',
             'message' => 'Password has been updated successfully!',
         ]);
+    }
+
+    public function delete(DeleteRequest $request, $id){
+        try {
+            $request->validated();
+        }catch(\Throwable $exception){
+            return response()->json([
+                'status' => 'error',
+                'message' => $exception->getMessage(),
+            ]);
+        }
+        try{$target = Student::find($id);}
+        catch(\Throwable $exception){
+            return response()->json([
+                'status' => 'error',
+                'message' => "Student ID=".$id." doesn't exist!",
+            ]);
+        }
+        try{
+            $target->delete();
+        }catch(\Throwable $exception){
+            return response()->json([
+                'status' => 'error',
+                'message' => $exception->getMessage(),
+            ]);
+        }
+        return [
+            'status' => 'success',
+            'message' => 'Student ID='.$id." deleted!",
+        ];
     }
 }

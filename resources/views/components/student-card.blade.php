@@ -11,6 +11,9 @@
                         Email: {{$email}}<br>
                         <abbr title="Phone">P:</abbr> {{$phone}}
                     </div>
+                    @if(auth()->user()->role=='1')
+                        <button data-href="{{route('staff.students.delete',['id'=>$id])}}" class="btn btn-raised btn-sm btn-danger waves-effect delete-button float-right">Delete</button>
+                    @endif
                 </div>
             </div>
         </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeleteRequest;
 use App\Http\Requests\ImportRequest;
 use App\Http\Requests\StoreLecturerRequest;
 use App\Http\Requests\UpdateLecturerRequest;
@@ -262,5 +263,35 @@ class LecturerController extends Controller
             'status' => 'success',
             'message' => 'Password has been updated successfully!',
         ]);
+    }
+
+    public function delete(DeleteRequest $request, $id){
+        try {
+            $request->validated();
+        }catch(\Throwable $exception){
+            return response()->json([
+                'status' => 'error',
+                'message' => $exception->getMessage(),
+            ]);
+        }
+        try{$target = Lecturer::find($id);}
+        catch(\Throwable $exception){
+            return response()->json([
+                'status' => 'error',
+                'message' => "Staff ID=".$id." doesn't exist!",
+            ]);
+        }
+        try{
+            $target->delete();
+        }catch(\Throwable $exception){
+            return response()->json([
+                'status' => 'error',
+                'message' => $exception->getMessage(),
+            ]);
+        }
+        return [
+            'status' => 'success',
+            'message' => 'Lecturer ID='.$id." deleted!",
+        ];
     }
 }

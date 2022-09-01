@@ -89,32 +89,34 @@
             </div>
         </div>
     </div>
-    <div class="row clearfix">
-        @foreach($students as $student)
-            <x-studentcard>
-                <x-slot name="avatar">
-                    @if($student->avatar=='') {{asset('/img/staff/placeholder.jpg')}}
-                    @else {{asset('storage/'.$student->avatar)}}
-                    @endif
-                </x-slot>
-                <x-slot name="id">{{$student->id}}</x-slot>
-                <x-slot name="major">
-                    {{$student->major->name}}
-                </x-slot>
-                <x-slot name="class">
-                    {{$student->classs->name}}
-                </x-slot>
-                <x-slot name="name">
-                    {{$student->name}}
-                </x-slot>
-                <x-slot name="email">
-                    {{$student->email}}
-                </x-slot>
-                <x-slot name="phone">
-                    {{$student->phone}}
-                </x-slot>
-            </x-studentcard>
-        @endforeach
+    <div id="reload">
+        <div class="row clearfix" id="student-all">
+            @foreach($students as $student)
+                <x-studentcard>
+                    <x-slot name="avatar">
+                        @if($student->avatar=='') {{asset('/img/staff/placeholder.jpg')}}
+                        @else {{asset('storage/'.$student->avatar)}}
+                        @endif
+                    </x-slot>
+                    <x-slot name="id">{{$student->id}}</x-slot>
+                    <x-slot name="major">
+                        {{$student->major->name}}
+                    </x-slot>
+                    <x-slot name="class">
+                        {{$student->classs->name}}
+                    </x-slot>
+                    <x-slot name="name">
+                        {{$student->name}}
+                    </x-slot>
+                    <x-slot name="email">
+                        {{$student->email}}
+                    </x-slot>
+                    <x-slot name="phone">
+                        {{$student->phone}}
+                    </x-slot>
+                </x-studentcard>
+            @endforeach
+        </div>
     </div>
     <ul class="p-b-10 pagination justify-content-center" >
         {{$students->links()}}
@@ -122,6 +124,9 @@
 @endsection
 
 @push('js')
+    <script src="{{asset('/staff-asset/plugins/jquery-validation/jquery.validate.js')}}"></script> <!-- Jquery Validation Plugin Css -->
+    <script src="{{asset('staff-asset/plugins/bootstrap-notify/bootstrap-notify.js')}}"></script>
+    <script src="{{asset('/staff-asset/js/pages/ui/notifications.js')}}"></script>
     <script>
         $(function (){
             let majors = @json($majors);
@@ -161,6 +166,58 @@
                let major = getSelectedMajor();
                $('#class').find('option:not(:first)').remove();
                fetchClass(major);
+            });
+        })
+    </script>
+    <script>
+        $(function(){
+            function callAJAX(actURL,formData=''){
+                $.ajax({
+                    type: "POST",
+                    url: actURL,
+                    data: formData,
+                    dataType: "json",
+                    success: function(response) {
+                        if(response.status==="success"){
+                            $("#close-ava").click();
+                            showNotification('g-bg-cgreen',response.message,'top','center','animated fadeInDown','animated fadeOutDown');
+                            $("#reload").load(document.URL+' #student-all');
+                        }else{
+                            showNotification('g-bg-soundcloud',response.message,'top','center','animated zoomInDown','animated zoomOutUp');
+                        }
+                    },
+                    error: function (response){
+                        let error ='';
+                        if(response.responseJSON.errors){
+                            let errors = Object.values(response.responseJSON.errors);
+                            if(Array.isArray(errors)){
+                                errors.forEach(function (each){
+                                    each.forEach(function(message){
+                                        error+=`${message}<br>`;
+                                    });
+                                });
+                            }
+                            else{
+                                error+=`${errors}`;
+                            }
+                        }
+                        else {
+                            error = response.responseJSON.message;
+                        }
+                        showNotification('g-bg-soundcloud',error,'top','center','animated zoomInDown','animated zoomOutUp');
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    enctype: "multipart/form-data",
+                    async: false,
+                });
+            }
+            $('.delete-button').on('click',function (){
+                const formData = new FormData();
+                formData.append('_token','{{csrf_token()}}');
+                let actURL = $(this).data('href');
+                callAJAX(actURL,formData);
             });
         })
     </script>

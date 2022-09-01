@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeleteRequest;
 use App\Http\Requests\StaffRequest;
 use App\Models\AcademicStaff;
 use Illuminate\Http\Request;
@@ -107,5 +108,35 @@ class StaffController extends Controller
             'status' => 'success',
             'message' => 'New staff has been added successfully!',
         ]);
+    }
+
+    public function delete(DeleteRequest $request, $id){
+        try {
+            $request->validated();
+        }catch(\Throwable $exception){
+            return response()->json([
+                'status' => 'error',
+                'message' => $exception->getMessage(),
+            ]);
+        }
+        try{$target = AcademicStaff::find($id);}
+        catch(\Throwable $exception){
+            return response()->json([
+                'status' => 'error',
+                'message' => "Staff ID=".$id." doesn't exist!",
+            ]);
+        }
+        try{
+            $target->delete();
+        }catch(\Throwable $exception){
+            return response()->json([
+                'status' => 'error',
+                'message' => $exception->getMessage(),
+            ]);
+        }
+        return [
+            'status' => 'success',
+            'message' => 'Staff ID='.$id." deleted!",
+        ];
     }
 }

@@ -21,7 +21,8 @@
                                     data-role="{{$role}}"
                                     data-toggle="modal" data-target="#Modal"
                                     data-type="update"
-                                    class="btn btn-raised btn-sm btn-default waves-effect">Update Profile</button>
+                                    class="btn btn-raised btn-sm btn-info waves-effect">Update Profile</button>
+                            <button data-href="{{route('staff.staff.delete',['id'=>$id])}}" class="btn btn-raised btn-sm btn-danger waves-effect delete-button">Delete</button>
                         @endif
                     </div>
                 </div>

@@ -321,7 +321,7 @@
                             }
                         }
                         else {
-                            error = response.message;
+                            error = response.responseJSON.message;
                         }
                         showNotification('g-bg-soundcloud',error,'top','center','animated zoomInDown','animated zoomOutUp');
 

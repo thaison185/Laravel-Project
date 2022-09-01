@@ -93,105 +93,107 @@
                 </section>
             </div>
         </div>
-        <div class="row clearfix">
-            <div class="col-lg-4 col-md-12 col-sm-12">
-                <div class="card">
-                    <div class="header">
-                        <h2>Description</h2>
+        <div id="reload">
+            <div class="row clearfix" id="basic-info">
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Description</h2>
+                        </div>
+                        <div class="body">
+                            <p class="text-default">{{nl2br($lecturer->description)}}</p>
+                        </div>
                     </div>
-                    <div class="body">
-                        <p class="text-default">{{nl2br($lecturer->description)}}</p>
+                    <div class="card">
+                        <div class="header">
+                            <h2>Subjects & Classes</h2>
+                        </div>
+                        <div class="body">
+                        </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="header">
-                        <h2>Subjects & Classes</h2>
-                    </div>
-                    <div class="body">
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-8 col-md-12 col-sm-12">
-                <div class="card">
-                    <div class="body">
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane in active" id="usersettings">
-                                <h2 class="card-inside-title">Account Settings</h2>
-                                <form method="post" id="basic-infos" action="{{route('staff.lecturers.update',['id'=>$lecturer->id])}}">
-                                    @csrf
-                                    <div class="row clearfix">
-                                        <div class="col-md-6 col-sm-12">
-                                            <div class="form-group">
-                                                <div class="form-line">
-                                                    <input type="text" class="form-control" value="{{explode(' ',$lecturer->name)[0]}}" name="last-name" required>
+                <div class="col-lg-8 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="body">
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane in active" id="usersettings">
+                                    <h2 class="card-inside-title">Account Settings</h2>
+                                    <form method="post" id="basic-infos" action="{{route('staff.lecturers.update',['id'=>$lecturer->id])}}">
+                                        @csrf
+                                        <div class="row clearfix">
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="text" class="form-control" value="{{explode(' ',$lecturer->name)[0]}}" name="last-name" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="text" class="form-control" value="{{implode(' ',array_slice(explode(' ',$lecturer->name),1))}}" name="first-name"  required>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-sm-12">
-                                            <div class="form-group">
-                                                <div class="form-line">
-                                                    <input type="text" class="form-control" value="{{implode(' ',array_slice(explode(' ',$lecturer->name),1))}}" name="first-name"  required>
+                                        <div class="row clearfix">
+                                            <div class="col-md-3 col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="text" class="datepicker form-control" value="{{\Illuminate\Support\Carbon::createFromFormat('Y-m-d',$lecturer->DoB)->format('d/m/Y')}}" name="DoB" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <select class="form-control show-tick" name="gender" required>
+                                                            <option value="">--Gender--</option>
+                                                            <option value="1" @if($lecturer->gender=='1') selected @endif>Male</option>
+                                                            <option value="0" @if($lecturer->gender=='0') selected @endif>Female</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <select class="form-control show-tick" name="faculty_id" required>
+                                                            <option value="">--Faculty--</option>
+                                                            @foreach($faculties as $faculty)
+                                                                <option value="{{$faculty->id}}" @if($lecturer->faculty_id===$faculty->id) selected @endif> {{$faculty->id.'. '.$faculty->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="text" class="form-control" placeholder="Title" name="title" value="{{$lecturer->title}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="text" class="form-control" placeholder="Degree" name="degree" value="{{$lecturer->degree}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <textarea class="form-control text-default" placeholder="Description..." name="description">@if($lecturer->description!=''){{$lecturer->description}}@endif</textarea>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row clearfix">
-                                        <div class="col-md-3 col-sm-12">
-                                            <div class="form-group">
-                                                <div class="form-line">
-                                                    <input type="text" class="datepicker form-control" value="{{\Illuminate\Support\Carbon::createFromFormat('Y-m-d',$lecturer->DoB)->format('d/m/Y')}}" name="DoB" required>
-                                                </div>
-                                            </div>
+                                        <div class="col-sm-12">
+                                            <button type="submit" class="btn btn-raised btn-success waves-effect">Save Changes</button>
                                         </div>
-                                        <div class="col-md-3 col-sm-12">
-                                            <div class="form-group">
-                                                <div class="form-line">
-                                                    <select class="form-control show-tick" name="gender" required>
-                                                        <option value="">--Gender--</option>
-                                                        <option value="1" @if($lecturer->gender=='1') selected @endif>Male</option>
-                                                        <option value="0" @if($lecturer->gender=='0') selected @endif>Female</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 col-sm-12">
-                                            <div class="form-group">
-                                                <div class="form-line">
-                                                    <select class="form-control show-tick" name="faculty_id" required>
-                                                        <option value="">--Faculty--</option>
-                                                        @foreach($faculties as $faculty)
-                                                            <option value="{{$faculty->id}}" @if($lecturer->faculty_id===$faculty->id) selected @endif> {{$faculty->id.'. '.$faculty->name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 col-sm-12">
-                                            <div class="form-group">
-                                                <div class="form-line">
-                                                    <input type="text" class="form-control" placeholder="Title" name="title" value="{{$lecturer->title}}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 col-sm-12">
-                                            <div class="form-group">
-                                                <div class="form-line">
-                                                    <input type="text" class="form-control" placeholder="Degree" name="degree" value="{{$lecturer->degree}}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 col-sm-12">
-                                            <div class="form-group">
-                                                <div class="form-line">
-                                                    <textarea class="form-control text-default" placeholder="Description..." name="description">@if($lecturer->description!=''){{$lecturer->description}}@endif</textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <button type="submit" class="btn btn-raised btn-success waves-effect">Save Changes</button>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -501,6 +503,7 @@
                             if(type!=='basic')  $("#close-"+type).click();
                             showNotification('g-bg-cgreen',response.message,'top','center','animated fadeInDown','animated fadeOutDown');
                             if(response.avatar) $("#avatar-thumb").attr('src',`{{asset('storage')}}/${response.avatar}`);
+                            $('#reload').load(document.URL +  ' #basic-info');
                         }else{
                             showNotification('g-bg-soundcloud',response.message,'top','center','animated zoomInDown','animated zoomOutUp');
                         }
@@ -521,7 +524,7 @@
                             }
                         }
                         else {
-                            error = response.message;
+                            error = response.responseJSON.message;
                         }
                         showNotification('g-bg-soundcloud',error,'top','center','animated zoomInDown','animated zoomOutUp');
                     },
