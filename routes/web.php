@@ -67,8 +67,7 @@ Route::prefix('staff')->middleware('auth:staff')->name('staff.')->group(function
         'as' => 'staff.',
         'prefix' => 'staff',
     ], static function(){
-        Route::match(['get','post'],'/',[StaffController::class,'index'])->name('all');
-        Route::get('/{id}',[StaffController::class,'profile'])->where('id', '[0-9]+')->name('one');
+        Route::get('/',[StaffController::class,'index'])->name('all');
         Route::get('/add',[StaffController::class,'create'])->name('create');
         Route::post('/add',[StaffController::class,'store'])->name('store');
         Route::post('/{id}/update',[StaffController::class,'update'])->name('update');

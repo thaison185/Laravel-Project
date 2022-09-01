@@ -19,14 +19,7 @@ class StoreStudentRequest extends FormRequest
 
     public function rules()
     {
-        if($this->has('type'))
-        {
-            $type = $this->get('type');
-            if($type === 'basic') return $this->basic();
-            else if($type === 'avatar') return $this->avatar();
-            else return $this->password();
-        }
-        return $this->insert();
+
     }
 
     protected function basic(){

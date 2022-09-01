@@ -89,6 +89,7 @@ class StudentController extends Controller
                 'message' => $exception->getMessage(),
             ]);
         }
+        $infos['description'] = $request->get('description');
         $name = $infos['last-name'].' '.$infos['first-name'];
         unset($infos['first-name']);
         unset($infos['last-name']);
@@ -209,12 +210,13 @@ class StudentController extends Controller
         catch(\Throwable $exception){
             return response()->json([
                 'status' => 'error',
-                'message' => "Can't find Lecturer ID=".$id,
+                'message' => "Can't find Staff ID=".$id,
             ]);
         }
 
         $type = $request->get('type');
         if ($type === 'basic'){
+            $data['description'] = $request->get('description');
             $name = $data['last-name'].' '.$data['first-name'];
             unset($data['first-name']);
             unset($data['last-name']);

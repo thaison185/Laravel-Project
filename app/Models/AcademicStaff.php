@@ -11,4 +11,13 @@ class AcademicStaff extends Authenticatable
     use HasFactory;
     protected $table = 'academic_staff';
     public $timestamps = false;
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'gender',
+        'avatar',
+        'role',
+    ];
 }

@@ -64,6 +64,8 @@ class LecturerController extends Controller
                 'message' => $exception->getMessage(),
             ]);
         }
+        $infos['description'] = $request->get('description');
+        $infos['degree'] = $request->get('degree');
         $name = $infos['last-name'].' '.$infos['first-name'];
         unset($infos['first-name']);
         unset($infos['last-name']);
@@ -196,6 +198,8 @@ class LecturerController extends Controller
 
         $type = $request->get('type');
         if ($type === 'basic'){
+            $data['degree'] = $request->get('degree');
+            $data['description'] = $request->get('description');
             $name = $data['last-name'].' '.$data['first-name'];
             unset($data['first-name']);
             unset($data['last-name']);
