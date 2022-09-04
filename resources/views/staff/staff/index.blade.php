@@ -11,7 +11,7 @@
         #upload-label {
             position: absolute;
             top: 50%;
-            left: 1rem;
+            left: .5rem;
             transform: translateY(-50%);
         }
 
@@ -30,7 +30,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 0.8rem;
+            font-size: 0.6rem;
             z-index: 1;
         }
 
@@ -110,14 +110,14 @@
                             <div class="col-md-4 col-sm-12">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="text" class="form-control" name="last-name" required>
+                                        <input type="text" class="form-control" name="last-name" placeholder="Last Name" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4 col-sm-12">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="text" class="form-control" name="first-name" required>
+                                        <input type="text" class="form-control" name="first-name" placeholder="First Name" required>
                                     </div>
                                 </div>
                             </div>
@@ -200,6 +200,7 @@
         $(function (){
             $("#Modal").on('hide.bs.modal', function (){
                 $(this).find('form')[0].reset();
+                $(this).find('input[name="type"]').remove();
                 $("#imageResult").attr('src','#');
                 $("#upload-label").html('Choose Avatar');
                 $(this).find('.email-here').remove();
@@ -393,11 +394,13 @@
                     async: false,
                 });
             }
-            $('.delete-button').on('click',function (){
-                const formData = new FormData();
-                formData.append('_token','{{csrf_token()}}');
-                let actURL = $(this).data('href');
-                callAJAX(actURL,formData);
+            $(document).on('click','.delete-button',function (){
+                if (confirm("You really want to delete this major?") === true) {
+                    const formData = new FormData();
+                    formData.append('_token','{{csrf_token()}}');
+                    let actURL = $(this).data('href');
+                    callAJAX(actURL,formData);
+                }
             });
         });
     </script>

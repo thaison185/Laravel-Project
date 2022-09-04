@@ -213,11 +213,13 @@
                     async: false,
                 });
             }
-            $('.delete-button').on('click',function (){
-                const formData = new FormData();
-                formData.append('_token','{{csrf_token()}}');
-                let actURL = $(this).data('href');
-                callAJAX(actURL,formData);
+            $(document).on('click','.delete-button',function (){
+                if (confirm("You really want to delete this major?") === true) {
+                    const formData = new FormData();
+                    formData.append('_token','{{csrf_token()}}');
+                    let actURL = $(this).data('href');
+                    callAJAX(actURL,formData);
+                }
             });
         })
     </script>

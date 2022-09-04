@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Staff\LecturerController;
 use App\Http\Controllers\Staff\StudentController;
 use App\Http\Controllers\Staff\StaffController;
+use App\Http\Controllers\Staff\SubjectMajorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -74,6 +75,48 @@ Route::prefix('staff')->middleware('auth:staff')->name('staff.')->group(function
         Route::post('/add',[StaffController::class,'store'])->name('store');
         Route::post('/{id}/update',[StaffController::class,'update'])->name('update');
         Route::post('{id}/delete',[StaffController::class,'delete'])->name('delete');
+    });
+
+    Route::group([
+        'as' => 'staff.',
+        'prefix' => 'staff',
+    ], static function(){
+        Route::get('/',[StaffController::class,'index'])->name('all');
+        Route::post('/add',[StaffController::class,'store'])->name('store');
+        Route::post('/{id}/update',[StaffController::class,'update'])->name('update');
+        Route::post('{id}/delete',[StaffController::class,'delete'])->name('delete');
+    });
+
+    Route::group([
+        'as' => 'subject-major.',
+        'prefix' => 'subject-major',
+    ], static function(){
+        Route::get('/subjects',[SubjectMajorController::class,'subjects'])->name('subjects');
+        Route::get('/majors',[SubjectMajorController::class,'majors'])->name('majors');
+        Route::post('/subject/add',[SubjectMajorController::class,'storeSubject'])->name('storeSubject');
+        Route::post('/subject/{id}/update',[SubjectMajorController::class,'updateSubject'])->name('updateSubject');
+        Route::post('/subject/{id}/delete',[SubjectMajorController::class,'deleteSubject'])->name('deleteSubject');
+        Route::post('/major/add',[SubjectMajorController::class,'storeMajor'])->name('storeMajor');
+        Route::post('/major/{id}/update',[SubjectMajorController::class,'updateMajor'])->name('updateMajor');
+        Route::post('/major/{id}/delete',[SubjectMajorController::class,'deleteMajor'])->name('deleteMajor');
+        Route::post('/add-subject-major',[SubjectMajorController::class,'addSubjectMajor'])->name('addSubjectMajor');
+        Route::post('/{major}/{subject}/{semester}/delete',[SubjectMajorController::class,'deleteSubjectMajor'])->name('deleteSubjectMajor');
+    });
+
+    Route::group([
+        'as' => 'faculty-class.',
+        'prefix' => 'faculty-class',
+    ], static function(){
+        Route::get('/subjects',[SubjectMajorController::class,'subjects'])->name('subjects');
+        Route::get('/majors',[SubjectMajorController::class,'majors'])->name('majors');
+        Route::post('/subject/add',[SubjectMajorController::class,'storeSubject'])->name('storeSubject');
+        Route::post('/subject/{id}/update',[SubjectMajorController::class,'updateSubject'])->name('updateSubject');
+        Route::post('/subject/{id}/delete',[SubjectMajorController::class,'deleteSubject'])->name('deleteSubject');
+        Route::post('/major/add',[SubjectMajorController::class,'storeMajor'])->name('storeMajor');
+        Route::post('/major/{id}/update',[SubjectMajorController::class,'updateMajor'])->name('updateMajor');
+        Route::post('/major/{id}/delete',[SubjectMajorController::class,'deleteMajor'])->name('deleteMajor');
+        Route::post('/add-subject-major',[SubjectMajorController::class,'addSubjectMajor'])->name('addSubjectMajor');
+        Route::post('/{major}/{subject}/{semester}/delete',[SubjectMajorController::class,'deleteSubjectMajor'])->name('deleteSubjectMajor');
     });
 });
 

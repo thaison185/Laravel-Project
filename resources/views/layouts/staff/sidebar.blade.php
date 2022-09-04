@@ -36,10 +36,16 @@
                         <li id="import-students"><a href="{{route('staff.students.import-index')}}">Import Students</a></li>
                     </ul>
                 </li>
-                <li class="li-parent"><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-graduation-cap"></i><span>Subjects</span> </a>
+                <li class="li-parent"><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-graduation-cap"></i><span>Subjects & Majors</span> </a>
                     <ul class="ml-menu">
-                        <li id="courses"><a href="courses.html">All Courses</a></li>
-                        <li id="add-course"><a href="add-courses.html">Add Course</a></li>
+                        <li id="subjects"><a href="{{route('staff.subject-major.subjects')}}">All Subjects</a></li>
+                        <li id="majors"><a href="{{route('staff.subject-major.majors')}}">All Majors</a></li>
+                    </ul>
+                </li>
+                <li class="li-parent"><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-city-alt"></i><span>Faculties & Classes</span> </a>
+                    <ul class="ml-menu">
+                        <li id="departments"><a href="{{route('staff.faculty-class.faculties')}}">All Faculties</a></li>
+                        <li id="classes"><a href="{{route('staff.faculty-class.classes')}}">All Classes</a></li>
                     </ul>
                 </li>
                 <li class="li-parent"><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-mood"></i><span>Staff</span> </a>
@@ -47,17 +53,6 @@
                         <li id="staff"><a href="{{route('staff.staff.all')}}">All Staff</a></li>
                     </ul>
                 </li>
-                <li class="li-parent"><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-city-alt"></i><span>Departments</span> </a>
-                    <ul class="ml-menu">
-                        <li id="departments"><a href="departments.html">All Departments</a></li>
-                        <li id="add-department"><a href="add-departments.html">Add Department</a></li>
-                    </ul>
-                </li>
-{{--                <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-mood"></i><span>Staffs</span> </a>--}}
-{{--                    <ul class="ml-menu">--}}
-{{--                        <li><a href="staffs.html">All Staffs</a></li>--}}
-{{--                    </ul>--}}
-{{--                </li>--}}
                 <li class="about"><a href="centres.html"><i class="zmdi zmdi-pin"></i><span>About University</span></a></li>
             </ul>
         </div>

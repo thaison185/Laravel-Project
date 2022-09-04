@@ -9,7 +9,6 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Imports\StudentImport;
 use App\Models\Classs;
 use App\Models\Faculty;
-use App\Models\Lecturer;
 use App\Models\Major;
 use App\Models\Student;
 use Illuminate\Http\Request;

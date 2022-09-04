@@ -136,7 +136,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <textarea rows="4" class="form-control no-resize" placeholder="Description..."></textarea>
+                                        <textarea rows="4" class="form-control no-resize" placeholder="Description..." name="description"></textarea>
                                     </div>
                                 </div>
                             </div>
