@@ -41,7 +41,7 @@
                     <div class="body table-responsive panel-body">
                         <table class="table table-bordered table-hover">
                             <thead class="thead-light">
-                            <tr class="g-bg-blush2">
+                            <tr class="g-bg-cgreen">
                                 <th scope="col" class="text-center">ID</th>
                                 <th scope="col" class="text-center">Name</th>
                                 <th scope="col" class="text-center">Degree</th>
@@ -99,7 +99,7 @@
                                         <td colspan="12" class="hiddenRow">
                                             <div class="accordian-body collapse" id="target{{$major->id}}">
                                                 @for($each=1;$each<=$major->semester();$each++)
-                                                    <div data-toggle="collapse" class="accordion-toggle text-center @if($each%2==0) bg-cyan @else bg-green @endif" data-target="#{{$major->id}}semester{{$each}}">
+                                                    <div data-toggle="collapse" class="accordion-toggle text-center py-2 @if($each%2==0) bg-teal @else bg-cyan @endif" data-target="#{{$major->id}}semester{{$each}}">
                                                         Semester #{{$each}}
                                                     </div>
                                                     <div class="accordian-body collapse" id="{{$major->id}}semester{{$each}}">
@@ -331,19 +331,20 @@
                     callAJAX(actURL, formData);
                 }
             });
-
+            let button;
             $('#AddSubjectModal').on('show.bs.modal', function (event) {
-                let button = $(event.relatedTarget);
-                $("#add-form").submit(function (e){
-                    e.preventDefault();
-                    let actURL = $(this).attr("action");
-                    const formData = new FormData(this);
-                    formData.append("major_id",button.data('major'));
-                    formData.append("semester",button.data('semester'));
-                    callAJAX(actURL, formData,button.data('semester'));
-                });
-            })
-
+                console.log('On show!!!');
+                button = $(event.relatedTarget);
+            });
+            $('#add-form').submit(function (e){
+                e.preventDefault();
+                let actURL = $(this).attr("action");
+                const formData = new FormData(this);
+                formData.append("major_id",button.data('major'));
+                formData.append("semester",button.data('semester'));
+                console.log('Submit!!!');
+                callAJAX(actURL, formData,button.data('semester'));
+            });
 
             function callAJAX(actURL,formData,target=''){
                 $.ajax({

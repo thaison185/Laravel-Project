@@ -1,10 +1,18 @@
 @extends('layouts.staff.master')
 
-@section('title','All Subjects')
+@section('title','All Classes')
+
+@push('css')
+    <style>
+        .hiddenRow{
+            padding:0!important;
+        }
+    </style>
+@endpush
 
 @section('content-header')
     <div class="block-header">
-        <h2>All Subjects</h2>
+        <h2>All Classes</h2>
         <small class="text-muted">X University Application</small>
     </div>
 @endsection
@@ -18,56 +26,75 @@
                         <button type="button"
                                 class="btn btn-raised bg-blush waves-effect"
                                 data-toggle="modal" data-target="#Modal" data-type="add"
-                                data-action="{{route('staff.subject-major.storeSubject')}}">
-                            Add Subject
+                                data-action="{{route('staff.faculty-class.storeClass')}}">
+                            Add Class
                         </button>
                     </div>
                 </div>
             </div>
         </div>
     @endif
+
     <div id="reload">
-        <div class="row clearfix" id="subjects">
+        <div class="row clearfix" id="classes">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="card">
-                    <div class="body table-responsive">
-                        <table class="table table-bordered table-hover table-striped">
+                <div class="card panel panel-primary">
+                    <div class="body table-responsive panel-body">
+                        <table class="table table-bordered table-hover">
                             <thead class="thead-light">
-                            <tr class="g-bg-blush2">
+                            <tr class="g-bg-cgreen">
                                 <th scope="col" class="text-center">ID</th>
                                 <th scope="col" class="text-center">Name</th>
-                                <th scope="col" class="text-center">Description</th>
+                                <th scope="col" class="text-center">Major</th>
+                                <th scope="col" class="text-center">Admission Year</th>
+                                <th scope="col" class="text-center">Number of Students</th>
+                                <th scope="col" class="text-center">Subjects</th>
                                 <th scope="col"></th>
                             </tr>
                             </thead>
                             <tbody class="tbody">
-                                @foreach($subjects as $subject)
-                                    <tr>
-                                        <td class="text-center">{{$subject->id}}</td>
-                                        <td class="text-center">{{$subject->name}}</td>
-                                        <td class="text-center">{{$subject->description}}</td>
-                                        <td class="text-center">
-                                            <button type="button"
-                                                    data-action="{{route('staff.subject-major.updateSubject',['id'=>$subject->id])}}"
-                                                    data-name="{{$subject->name}}"
-                                                    data-description="{{$subject->description}}"
-                                                    data-toggle="modal" data-target="#Modal"
-                                                    data-type="update"
-                                                    data-id="{{$subject->id}}"
-                                                    class="btn btn-circle waves-effect waves-circle waves-float"><i class="zmdi zmdi-edit text-info"></i>
-                                            </button>
-                                            @if(auth()->user()->role=='1')
-                                                <button data-href="{{route('staff.subject-major.deleteSubject',['id'=>$subject->id])}}"
-                                                        data-toggle="modal" data-target="#DeleteModal"
-                                                        class="btn btn-circle waves-effect waves-float waves-circle"><i class="zmdi zmdi-delete text-danger"></i></button>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
+                            @foreach($classes as $class)
+                                <tr>
+                                    <td class="text-center">{{$class->id}}</td>
+                                    <td class="text-center">{{$class->name}}</td>
+                                    <td class="text-center">{{$class->major->name}}</td>
+                                    <td class="text-center">{{$class->admission_year}}</td>
+                                    <td class="text-center">
+                                        {{$class->students->count()}}
+                                        <form action="{{route('staff.students.all')}}" method="post" class="d-inline-block">
+                                            @csrf
+                                            <input type="hidden" name="class" value="{{$class->id}}">
+                                            <button class="btn btn-circle waves-effect waves-circle waves-float d-inline-block"
+                                                    title="All Students">
+                                                <i class="material-icons text-warning">people</i></button>
+                                        </form>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="{{route('staff.faculty-class.subjects',['id'=>$class->id])}}" class="btn btn-circle waves-effect waves-circle waves-float d-inline-block"
+                                                title="All Subject"><i class="zmdi zmdi-format-subject col-pink"></i></a>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button"
+                                                data-action="{{route('staff.faculty-class.updateClass',['id'=>$class->id])}}"
+                                                data-year="{{$class->admission_year}}"
+                                                data-major="{{$class->major_id}}"
+                                                data-toggle="modal" data-target="#Modal"
+                                                data-type="update"
+                                                data-id="{{$class->id}}"
+                                                class="btn btn-circle waves-effect waves-circle waves-float"><i class="zmdi zmdi-edit text-info"></i>
+                                        </button>
+                                        @if(auth()->user()->role=='1')
+                                            <button data-href="{{route('staff.faculty-class.deleteClass',['id'=>$class->id])}}"
+                                                    data-toggle="modal" data-target="#DeleteModal"
+                                                    class="btn btn-circle waves-effect waves-float waves-circle"><i class="zmdi zmdi-delete text-danger"></i></button>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
                         <ul class="p-b-10 pagination justify-content-center" >
-                            {{$subjects->links()}}
+                            {{$classes->links()}}
                         </ul>
                     </div>
                 </div>
@@ -80,24 +107,29 @@
     <div class="modal fade" id="Modal" tabindex="-1" role="dialog">
         <form method="post" id="update-form" enctype="multipart/form-data">
             @csrf
-            <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content modal-col-blue-grey">
                     <div class="modal-header">
                         <h4 class="modal-title" id="defaultModalLabel"></h4>
                     </div>
                     <div class="modal-body append-here">
                         <div class="row clearfix">
-                            <div class="col-md-12 col-sm-12">
+                            <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="text" class="form-control" name="name" placeholder="Name" required>
+                                        <input type="text" class="form-control" name="admission_year" placeholder="Admission Year" required>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12">
+                            <div class="col-md-4 col-sm-8" id="select-major">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <textarea rows="4" class="form-control no-resize" placeholder="Description..." name="description"></textarea>
+                                        <select class="form-control show-tick" name="major_id" required id="select-major">
+                                            <option value="">--Major--</option>
+                                            @foreach($majors as $major)
+                                                <option value="{{$major->id}}"> {{$major->id.'. '.$major->name}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -116,12 +148,12 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content modal-col-teal">
                 <div class="modal-header text-center">
-                    <h4 class="modal-title">Delete Subject</h4>
+                    <h4 class="modal-title">Delete Class</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row clearfix text-center">
-                        <p>Do you really want to delete this Subject?</p>
-                        <p><small><i>Using <b>Force Delete</b> to delete all related records belong to in this Subject</i></small></p>
+                        <p>Do you really want to delete this Class?</p>
+                        <p><small><i>Using <b>Force Delete</b> to delete all Students in this Class</i></small></p>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -144,6 +176,7 @@
         $(function (){
             $("#Modal").on('hide.bs.modal', function (){
                 $(this).find('form')[0].reset();
+                $(this).find('input[name="type"]').remove();
             });
         });
     </script>
@@ -155,12 +188,13 @@
             modal.find('form').attr('action',button.data('action'));
             if(button.data('type')=='update'){
                 modal.find('.append-here').append($('<input type="hidden" name="type" value="update" class="type">'));
-                modal.find('input[name="name"]').val(button.data('name'));
-                modal.find('textarea[name="description"]').val(button.data('description'));
-                $('#defaultModalLabel').text('Update Subject #'+button.data('id'))
+                modal.find('input[name="admission_year"]').val(button.data('year'));
+                let major = button.data('major');
+                $('#select-major').find('option:contains("'+major+'")').prop("selected",true);
+                $('#defaultModalLabel').text('Update Class #'+button.data('id'))
             }else{
                 modal.find('.append-here').append($('<input type="hidden" name="type" value="add" class="type">'));
-                $('#defaultModalLabel').text('Add Subject')
+                $('#defaultModalLabel').text('Add Class')
             }
         });
 
@@ -169,14 +203,15 @@
             let modal=$(this);
             $('.btn-delete').attr('data-href',button.data('href'));
         })
+
     </script>
     {{--    Input fields validate      --}}
     <script>
         $(function () {
             $('#update-form').validate({
                 rules: {
-                    'name': {
-                        maxlength: 50,
+                    'admission_year': {
+                        maxlength: 4,
                     }
                 },
                 highlight: function (input) {
@@ -203,6 +238,18 @@
                 }
             });
 
+            $('#AddSubjectModal').on('show.bs.modal', function (event) {
+                let button = $(event.relatedTarget);
+                $("#add-form").submit(function (e){
+                    e.preventDefault();
+                    let actURL = $(this).attr("action");
+                    const formData = new FormData(this);
+                    formData.append("major_id",button.data('major'));
+                    formData.append("semester",button.data('semester'));
+                    callAJAX(actURL, formData,button.data('semester'));
+                });
+            })
+
             $(document).on('click','.btn-delete',function(){
                 const formData = new FormData();
                 formData.append('_token','{{csrf_token()}}');
@@ -211,7 +258,8 @@
                 callAJAX(actURL,formData);
             })
 
-            function callAJAX(actURL,formData){
+
+            function callAJAX(actURL,formData,target=''){
                 $.ajax({
                     type: "POST",
                     url: actURL,
@@ -219,10 +267,12 @@
                     dataType: "json",
                     success: function(response) {
                         if(response.status==="success"){
-                            $("#close-ava").click();
+                            $("#close-button").click();
                             showNotification('g-bg-cgreen',response.message,'top','center','animated fadeInDown','animated fadeOutDown');
-                            $("#reload").load(document.URL+' #reload');
+                            if (target==='') $("#reload").load(document.URL+' #reload');
+                            else $('#'+formData.get('major_id')+'semester'+target).load(document.URL+ ' #table-'+formData.get('major_id')+'-semester'+target);
                         }else{
+                            if(response.action==='close') $("#close-button").click();
                             showNotification('g-bg-soundcloud',response.message,'top','center','animated zoomInDown','animated zoomOutUp');
                         }
                     },
@@ -253,12 +303,14 @@
                     async: false,
                 });
             }
-            $(document).on('click','.delete-button',function (){
+
+            $(document).on('click','.remove-button',function (){
                 if (confirm("You really want to delete this subject?") === true) {
                     const formData = new FormData();
                     formData.append('_token','{{csrf_token()}}');
+                    formData.append('major_id',$(this).data('major'));
                     let actURL = $(this).data('href');
-                    callAJAX(actURL,formData);
+                    callAJAX(actURL,formData,$(this).data('semester'));
                 }
             });
         });

@@ -12,6 +12,7 @@ class CreateLecturerSubjectClassTable extends Migration
             $table->foreignId('lecturer_id');
             $table->foreignId('subject_id');
             $table->foreignId('class_id');
+            $table->unsignedTinyInteger('semester');
         });
     }
 

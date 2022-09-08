@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Staff\FacultyClassController;
 use App\Http\Controllers\Staff\LecturerController;
 use App\Http\Controllers\Staff\StudentController;
 use App\Http\Controllers\Staff\StaffController;
@@ -107,16 +108,16 @@ Route::prefix('staff')->middleware('auth:staff')->name('staff.')->group(function
         'as' => 'faculty-class.',
         'prefix' => 'faculty-class',
     ], static function(){
-        Route::get('/subjects',[SubjectMajorController::class,'subjects'])->name('subjects');
-        Route::get('/majors',[SubjectMajorController::class,'majors'])->name('majors');
-        Route::post('/subject/add',[SubjectMajorController::class,'storeSubject'])->name('storeSubject');
-        Route::post('/subject/{id}/update',[SubjectMajorController::class,'updateSubject'])->name('updateSubject');
-        Route::post('/subject/{id}/delete',[SubjectMajorController::class,'deleteSubject'])->name('deleteSubject');
-        Route::post('/major/add',[SubjectMajorController::class,'storeMajor'])->name('storeMajor');
-        Route::post('/major/{id}/update',[SubjectMajorController::class,'updateMajor'])->name('updateMajor');
-        Route::post('/major/{id}/delete',[SubjectMajorController::class,'deleteMajor'])->name('deleteMajor');
-        Route::post('/add-subject-major',[SubjectMajorController::class,'addSubjectMajor'])->name('addSubjectMajor');
-        Route::post('/{major}/{subject}/{semester}/delete',[SubjectMajorController::class,'deleteSubjectMajor'])->name('deleteSubjectMajor');
+        Route::get('/faculties',[FacultyClassController::class,'faculties'])->name('faculties');
+        Route::get('/classes',[FacultyClassController::class,'classes'])->name('classes');
+        Route::post('/faculties/add',[FacultyClassController::class,'storeFaculty'])->name('storeFaculty');
+        Route::post('/faculty/{id}/update',[FacultyClassController::class,'updateFaculty'])->name('updateFaculty');
+        Route::post('/faculty/{id}/delete',[FacultyClassController::class,'deleteFaculty'])->name('deleteFaculty');
+        Route::post('/class/add',[FacultyClassController::class,'storeClass'])->name('storeClass');
+        Route::post('/class/{id}/update',[FacultyClassController::class,'updateClass'])->name('updateClass');
+        Route::post('/class/{id}/delete',[FacultyClassController::class,'deleteClass'])->name('deleteClass');
+        Route::get('/class/{id}/subjects',[FacultyClassController::class,'subjects'])->name('subjects');
+        Route::post('/class/{id}/assignment',[FacultyClassController::class,'assignment'])->name('assignment');
     });
 });
 

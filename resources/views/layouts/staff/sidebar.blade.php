@@ -44,7 +44,7 @@
                 </li>
                 <li class="li-parent"><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-city-alt"></i><span>Faculties & Classes</span> </a>
                     <ul class="ml-menu">
-                        <li id="departments"><a href="{{route('staff.faculty-class.faculties')}}">All Faculties</a></li>
+                        <li id="faculties"><a href="{{route('staff.faculty-class.faculties')}}">All Faculties</a></li>
                         <li id="classes"><a href="{{route('staff.faculty-class.classes')}}">All Classes</a></li>
                     </ul>
                 </li>

@@ -1,10 +1,10 @@
 @extends('layouts.staff.master')
 
-@section('title','All Subjects')
+@section('title','All Faculties')
 
 @section('content-header')
     <div class="block-header">
-        <h2>All Subjects</h2>
+        <h2>All Faculties</h2>
         <small class="text-muted">X University Application</small>
     </div>
 @endsection
@@ -18,8 +18,8 @@
                         <button type="button"
                                 class="btn btn-raised bg-blush waves-effect"
                                 data-toggle="modal" data-target="#Modal" data-type="add"
-                                data-action="{{route('staff.subject-major.storeSubject')}}">
-                            Add Subject
+                                data-action="{{route('staff.faculty-class.storeFaculty')}}">
+                            Add Faculty
                         </button>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
         </div>
     @endif
     <div id="reload">
-        <div class="row clearfix" id="subjects">
+        <div class="row clearfix" id="faculties">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="body table-responsive">
@@ -41,33 +41,31 @@
                             </tr>
                             </thead>
                             <tbody class="tbody">
-                                @foreach($subjects as $subject)
-                                    <tr>
-                                        <td class="text-center">{{$subject->id}}</td>
-                                        <td class="text-center">{{$subject->name}}</td>
-                                        <td class="text-center">{{$subject->description}}</td>
-                                        <td class="text-center">
-                                            <button type="button"
-                                                    data-action="{{route('staff.subject-major.updateSubject',['id'=>$subject->id])}}"
-                                                    data-name="{{$subject->name}}"
-                                                    data-description="{{$subject->description}}"
-                                                    data-toggle="modal" data-target="#Modal"
-                                                    data-type="update"
-                                                    data-id="{{$subject->id}}"
-                                                    class="btn btn-circle waves-effect waves-circle waves-float"><i class="zmdi zmdi-edit text-info"></i>
-                                            </button>
-                                            @if(auth()->user()->role=='1')
-                                                <button data-href="{{route('staff.subject-major.deleteSubject',['id'=>$subject->id])}}"
-                                                        data-toggle="modal" data-target="#DeleteModal"
-                                                        class="btn btn-circle waves-effect waves-float waves-circle"><i class="zmdi zmdi-delete text-danger"></i></button>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
+                            @foreach($faculties as $faculty)
+                                <tr>
+                                    <td class="text-center">{{$faculty->id}}</td>
+                                    <td class="text-center">{{$faculty->name}}</td>
+                                    <td class="text-center">{{$faculty->description}}</td>
+                                    <td class="text-center">
+                                        <button type="button"
+                                                data-action="{{route('staff.faculty-class.updateFaculty',['id'=>$faculty->id])}}"
+                                                data-name="{{$faculty->name}}"
+                                                data-description="{{$faculty->description}}"
+                                                data-toggle="modal" data-target="#Modal"
+                                                data-type="update"
+                                                data-id="{{$faculty->id}}"
+                                                class="btn btn-circle waves-effect waves-circle waves-float"><i class="zmdi zmdi-edit text-info"></i>
+                                        </button>
+                                        @if(auth()->user()->role=='1')
+                                            <button data-href="{{route('staff.faculty-class.deleteFaculty',['id'=>$faculty->id])}}" class="btn btn-circle waves-effect waves-float waves-circle delete-button"><i class="zmdi zmdi-delete text-danger"></i></button>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
                         <ul class="p-b-10 pagination justify-content-center" >
-                            {{$subjects->links()}}
+                            {{$faculties->links()}}
                         </ul>
                     </div>
                 </div>
@@ -111,27 +109,6 @@
             </div>
         </form>
     </div>
-
-    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content modal-col-teal">
-                <div class="modal-header text-center">
-                    <h4 class="modal-title">Delete Subject</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row clearfix text-center">
-                        <p>Do you really want to delete this Subject?</p>
-                        <p><small><i>Using <b>Force Delete</b> to delete all related records belong to in this Subject</i></small></p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger text-white waves-effect mx-1 mt-2 btn-delete" data-type="force">FORCE DELETE</button>
-                    <button class="btn btn-warning text-white waves-effect mx-1 mt-2 btn-delete">DELETE</button>
-                    <button class="btn btn-default waves-effect mx-1 mt-2" data-dismiss="modal" id="close-button">CANCEL</button>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @push('js')
@@ -157,17 +134,11 @@
                 modal.find('.append-here').append($('<input type="hidden" name="type" value="update" class="type">'));
                 modal.find('input[name="name"]').val(button.data('name'));
                 modal.find('textarea[name="description"]').val(button.data('description'));
-                $('#defaultModalLabel').text('Update Subject #'+button.data('id'))
+                $('#defaultModalLabel').text('Update faculty #'+button.data('id'))
             }else{
                 modal.find('.append-here').append($('<input type="hidden" name="type" value="add" class="type">'));
-                $('#defaultModalLabel').text('Add Subject')
+                $('#defaultModalLabel').text('Add Faculty')
             }
-        });
-
-        $('#DeleteModal').on('show.bs.modal',function (event){
-            let button = $(event.relatedTarget);
-            let modal=$(this);
-            $('.btn-delete').attr('data-href',button.data('href'));
         })
     </script>
     {{--    Input fields validate      --}}
@@ -202,15 +173,6 @@
                     callAJAX(actURL, formData);
                 }
             });
-
-            $(document).on('click','.btn-delete',function(){
-                const formData = new FormData();
-                formData.append('_token','{{csrf_token()}}');
-                formData.append('type',$(this).data('type'));
-                let actURL = $(this).data('href');
-                callAJAX(actURL,formData);
-            })
-
             function callAJAX(actURL,formData){
                 $.ajax({
                     type: "POST",
@@ -254,7 +216,7 @@
                 });
             }
             $(document).on('click','.delete-button',function (){
-                if (confirm("You really want to delete this subject?") === true) {
+                if (confirm("You really want to delete this faculty?") === true) {
                     const formData = new FormData();
                     formData.append('_token','{{csrf_token()}}');
                     let actURL = $(this).data('href');
@@ -264,3 +226,4 @@
         });
     </script>
 @endpush
+

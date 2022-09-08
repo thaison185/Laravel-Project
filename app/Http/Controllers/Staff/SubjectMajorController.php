@@ -7,6 +7,7 @@ use App\Http\Requests\DeleteRequest;
 use App\Http\Requests\MajorRequest;
 use App\Http\Requests\SubjectMajorRequest;
 use App\Http\Requests\SubjectRequest;
+use App\Models\Classs;
 use App\Models\Faculty;
 use App\Models\Major;
 use App\Models\MajorSubject;
@@ -72,7 +73,7 @@ class SubjectMajorController extends Controller
         }
         return response()->json([
             'status' => 'success',
-            'message' => 'Staff has been updated successfully!',
+            'message' => 'Subject has been updated successfully!',
         ]);
     }
 
@@ -122,6 +123,26 @@ class SubjectMajorController extends Controller
                 'message' => "Subject ID=".$id." doesn't exist!",
             ]);
         }
+        if($request->get('type')==='force'){
+            try{
+                MajorSubject::where('subject_id',$id)->delete();
+            }catch(\Throwable $exception){
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $exception->getMessage(),
+                ]);
+            }
+        }
+        else{
+            if (MajorSubject::where('subject_id',$id)->count()!==0){
+                return response()->json([
+                    'status' => 'error',
+                    'action' => 'close',
+                    'message' => 'This subject is in some curriculums. If you want to delete all related records of this subject, use FORCE DELETE!',
+                ]);
+            }
+        }
+
         try{
             $target->delete();
         }catch(\Throwable $exception){
@@ -226,18 +247,24 @@ class SubjectMajorController extends Controller
                 'message' => "Major ID=".$id." doesn't exist!",
             ]);
         }
-        try{
-            $target->delete();
-        }catch(\Throwable $exception){
-            return response()->json([
-                'status' => 'error',
-                'message' => $exception->getMessage(),
-            ]);
+        if(Classs::where('major_id',$id)->count()===0 && MajorSubject::where('major_id',$id)->count()===0){
+            try{
+                $target->delete();
+            }catch(\Throwable $exception){
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $exception->getMessage(),
+                ]);
+            }
+            return [
+                'status' => 'success',
+                'message' => 'Major ID='.$id." deleted!",
+            ];
         }
-        return [
-            'status' => 'success',
-            'message' => 'Major ID='.$id." deleted!",
-        ];
+        return response()->json([
+            'status' => 'error',
+            'message' => "You need to delete all subjects and classes belong to this Major before delete it!",
+        ]);
     }
 
     public function addSubjectMajor(SubjectMajorRequest $request){

@@ -16,7 +16,25 @@ class Classs extends Model
     protected $table = 'classes';
     public $timestamps = false;
 
+    protected $fillable = [
+        'name',
+        'admission_year',
+        'major_id',
+    ];
+
     public function major(){
         return $this->belongsTo(Major::class);
+    }
+
+    public function students(){
+        return $this->hasMany(Student::class,'class_id','id');
+    }
+
+    public function assignments(){
+        return $this->hasMany(Assignment::class,'class_id','id');
+    }
+
+    public function lecturer($subject,$semester){
+        return $this->assignments->where('subject_id',$subject)->where('semester',$semester)->first();
     }
 }

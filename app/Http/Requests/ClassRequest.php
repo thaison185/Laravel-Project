@@ -13,7 +13,7 @@ class ClassRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return (auth()->user()->role == '1');
     }
 
     /**
@@ -24,7 +24,8 @@ class ClassRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'major_id'=>'required|exists:\App\Models\Major,id',
+            'admission_year'=>'required|digits:4',
         ];
     }
 }
