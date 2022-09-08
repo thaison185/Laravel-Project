@@ -333,7 +333,6 @@
             });
             let button;
             $('#AddSubjectModal').on('show.bs.modal', function (event) {
-                console.log('On show!!!');
                 button = $(event.relatedTarget);
             });
             $('#add-form').submit(function (e){
@@ -342,7 +341,6 @@
                 const formData = new FormData(this);
                 formData.append("major_id",button.data('major'));
                 formData.append("semester",button.data('semester'));
-                console.log('Submit!!!');
                 callAJAX(actURL, formData,button.data('semester'));
             });
 

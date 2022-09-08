@@ -13,6 +13,7 @@ use App\Models\Major;
 use App\Models\MajorSubject;
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 
@@ -276,6 +277,11 @@ class SubjectMajorController extends Controller
                 'message' => $exception->getMessage(),
             ]);
         }
+        if(DB::table('major-subject')->where(['major_id'=>$infos['major_id'],'subject_id'=>$infos['subject_id'],'semester'=>$infos['semester']])->exists())
+            return response()->json([
+                'status' => 'error',
+                'message' => 'This subject is already in this semester!',
+            ]);
         try{
             $target = MajorSubject::create($infos);
         }catch(\Throwable $exception){
