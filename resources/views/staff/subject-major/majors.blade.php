@@ -112,8 +112,8 @@
                                                             <tbody>
                                                                 @foreach($major->inSemester($each) as $subject)
                                                                     <tr>
-                                                                        <td>{{$subject['subject']->name}}</td>
-                                                                        <td>{{$subject['hour']}}</td>
+                                                                        <td>{{$subject->subject->name}}</td>
+                                                                        <td>{{$subject->lecture_hour}}</td>
                                                                         @if(auth()->user()->role=='1')
                                                                             <td><button
                                                                                     data-href="{{route('staff.subject-major.deleteSubjectMajor',['major'=>$major->id,'subject'=>$subject['subject']->id,'semester'=>$each])}}"

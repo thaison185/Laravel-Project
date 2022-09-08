@@ -34,7 +34,7 @@ class Classs extends Model
         return $this->hasMany(Assignment::class,'class_id','id');
     }
 
-    public function lecturer($subject,$semester){
-        return $this->assignments->where('subject_id',$subject)->where('semester',$semester)->first();
+    public function assignment($majorSubject){
+        return $this->assignments->where('major-subject_id',$majorSubject)->first();
     }
 }

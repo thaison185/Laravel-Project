@@ -44,11 +44,6 @@ class Major extends Model
     }
 
     public function inSemester($semester){
-        $inSemester = $this->majorSubject->where('semester',$semester);
-        $return = [];
-        foreach ($inSemester as $subject){
-            $return[] = ['subject'=>$subject->subject,'hour'=>$subject->lecture_hour];
-        }
-        return collect($return);
+        return $this->majorSubject->where('semester',$semester);
     }
 }

@@ -296,11 +296,10 @@ class FacultyClassController extends Controller
             ]);
         }
         try {
-            if (!DB::table('lecturer-subject-class')->where(['class_id' => $id, 'subject_id' => $data['subject_id'], 'semester' => $data['semester']])->exists())
-                Assignment::create(['class_id' => $id, 'subject_id' => $data['subject_id'], 'semester' => $data['semester'], 'lecturer_id' => $data['lecturer_id']]);
-            else{
-                DB::table('lecturer-subject-class')->where(['class_id' => $id, 'subject_id' => $data['subject_id'], 'semester' => $data['semester']])->update(['lecturer_id' => $data['lecturer_id']]);
-            }
+            Assignment::updateOrCreate(
+                ['class_id' => $id, 'subject_id' => $data['subject_id'], 'semester' => $data['semester']],
+                ['lecturer_id' => $data['lecturer_id']]
+            );
         }
         catch(\Throwable $exception){
             return response()->json([

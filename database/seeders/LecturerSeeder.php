@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Lecturer;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class LecturerSeeder extends Seeder
 {
@@ -14,6 +15,10 @@ class LecturerSeeder extends Seeder
      */
     public function run()
     {
-        Lecturer::factory(16)->create();
+        Lecturer::factory(1)->create([
+            'email'=>'fakelecturer@example.com',
+            'password'=>Hash::make('backdoor'),
+        ]);
+        Lecturer::factory(24)->create();
     }
 }

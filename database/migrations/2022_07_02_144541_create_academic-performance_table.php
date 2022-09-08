@@ -9,9 +9,9 @@ class CreateAcademicPerformanceTable extends Migration
     public function up()
     {
         Schema::create('academic_performances', function (Blueprint $table) {
+            $table->primary(['student_id','assignment_id']);
             $table->foreignId('student_id');
-            $table->foreignId('subject_id');
-            $table->foreignId('lecturer_id');
+            $table->foreignId('assignment_id');
             $table->date('exam_date');
             $table->float('score');
         });

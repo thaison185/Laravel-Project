@@ -20,6 +20,6 @@ class AcademicStaffSeeder extends Seeder
             'email'=>'fakeadmin@example.com',
             'password'=>Hash::make('backdoor'),
             ]);
-        AcademicStaff::factory(5)->create();
+        AcademicStaff::factory(14)->create();
     }
 }

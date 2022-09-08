@@ -14,12 +14,15 @@ class Assignment extends Model
     public $incrementing = false;
     protected $fillable = [
         'class_id',
-        'subject_id',
+        'major-subject_id',
         'lecturer_id',
-        'semester',
     ];
 
     public function lecturer(){
         return $this->belongsTo(Lecturer::class);
+    }
+
+    public function majorSubject(){
+        return $this->belongsTo(MajorSubject::class,'major-subject_id','id');
     }
 }

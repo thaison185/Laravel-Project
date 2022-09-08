@@ -35,14 +35,14 @@
                                         <th scope="col">Lecturer</th>
                                     </thead>
                                     <tbody>
-                                    @foreach($class->major->inSemester($each) as $subject)
+                                    @foreach($class->major->inSemester($each) as $majorSubject)
                                         <tr>
-                                            <td>{{$subject['subject']->name}}</td>
+                                            <td>{{$majorSubject->subject->name}}</td>
                                             <td>
                                                 <div class="row clearfix">
                                                     <div class="col-8">
                                                         <select class="form-control show-tick" name="lecturer_id">
-                                                            {{$assignment=$class->lecturer($subject['subject']->id,$each)}}
+                                                            {{$assignment=$class->assignment($majorSubject->id)}}
                                                             <option value="" @if(empty($assignment)) selected @endif>Choose Lecturer</option>
                                                             @foreach($lecturers as $lecturer)
                                                                 <option value="{{$lecturer->id}}" @if(!empty($assignment)&&$assignment->lecturer->id === $lecturer->id) selected @endif>{{$lecturer->id}}. {{$lecturer->name}}</option>
@@ -53,7 +53,7 @@
                                                         <button class="btn waves-effect btn-raised btn-sm bg-light-blue float-right update-btn"
                                                                 data-semester="{{$each}}"
                                                                 data-href="{{route('staff.faculty-class.assignment',['id'=>$class->id])}}"
-                                                                data-subject="{{$subject['subject']->id}}">Update</button>
+                                                                data-subject="{{$majorSubject->subject->id}}">Update</button>
                                                     </div>
                                                 </div>
                                             </td>

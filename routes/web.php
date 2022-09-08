@@ -119,6 +119,8 @@ Route::prefix('staff')->middleware('auth:staff')->name('staff.')->group(function
         Route::get('/class/{id}/subjects',[FacultyClassController::class,'subjects'])->name('subjects');
         Route::post('/class/{id}/assignment',[FacultyClassController::class,'assignment'])->name('assignment');
     });
+
+
 });
 
 
