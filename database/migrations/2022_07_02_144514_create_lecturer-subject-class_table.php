@@ -9,6 +9,7 @@ class CreateLecturerSubjectClassTable extends Migration
     public function up()
     {
         Schema::create('lecturer-subject-class', function (Blueprint $table) {
+            $table->primary(['class_id','subject_id','semester']);
             $table->foreignId('lecturer_id');
             $table->foreignId('subject_id');
             $table->foreignId('class_id');

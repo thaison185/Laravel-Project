@@ -106,7 +106,7 @@
                                                         <table class="table table-bordered table-striped m-b-0" id="table-{{$major->id}}-semester{{$each}}">
                                                             <thead>
                                                                 <th>Subject</th>
-                                                                <th>Lecturer Hour</th>
+                                                                <th>Lecture Hour</th>
                                                                 @if(auth()->user()->role=='1')<th>Action</th>@endif
                                                             </thead>
                                                             <tbody>
@@ -241,7 +241,7 @@
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="number" class="form-control" name="lecturer_hour" placeholder="Lecturer Hour" min="70" max="300" required>
+                                        <input type="number" class="form-control" name="lecture_hour" placeholder="Lecture Hour" min="70" max="300" required>
                                     </div>
                                 </div>
                             </div>

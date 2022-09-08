@@ -280,7 +280,7 @@ class FacultyClassController extends Controller
     }
 
     public function subjects($id){
-        $class = Classs::find($id)->with('assignments')->first();
+        $class = Classs::with('assignments')->find($id);
         $faculty = $class->major->faculty->id;
         $lecturers = Lecturer::where('faculty_id',$faculty)->get();
         return view('staff.faculty-class.subjects',['class'=>$class,'focus'=>'classes','lecturers'=>$lecturers]);

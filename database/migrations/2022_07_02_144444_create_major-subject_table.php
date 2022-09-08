@@ -9,10 +9,11 @@ class CreateMajorSubjectTable extends Migration
     public function up()
     {
         Schema::create('major-subject', function (Blueprint $table) {
+            $table->primary(['major_id','subject_id','semester']);
             $table->foreignId('major_id');
             $table->foreignId('subject_id');
             $table->unsignedTinyInteger('semester');
-            $table->integer('lecturer_hour');
+            $table->integer('lecture_hour');
         });
     }
 

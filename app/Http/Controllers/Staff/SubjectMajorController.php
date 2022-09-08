@@ -160,7 +160,7 @@ class SubjectMajorController extends Controller
     public function majors()
     {
         $majors = Major::query();
-        $majors = $majors->paginate(10);
+        $majors = $majors->with(['faculty','majorSubject','subject'])->paginate(10);
         return view('staff.subject-major.majors',['majors'=>$majors,'focus' => 'majors']);
     }
 

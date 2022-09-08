@@ -68,7 +68,7 @@ class StudentController extends Controller
                 });
             }
         }
-        $students = $students->paginate(18);
+        $students = $students->with(['classs.major'])->paginate(18);
         return view('staff.students.index',[
             'students' => $students,
             'filter' => $filter,

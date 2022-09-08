@@ -44,7 +44,7 @@ class LecturerController extends Controller
                 });
             }
         }
-        $lecturers = $lecturers->paginate(12);
+        $lecturers = $lecturers->with('faculty')->paginate(12);
         return view('staff.lecturers.index',[
             'lecturers' => $lecturers,
             'filter' => $filter,
