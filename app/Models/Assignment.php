@@ -25,4 +25,8 @@ class Assignment extends Model
     public function majorSubject(){
         return $this->belongsTo(MajorSubject::class,'major-subject_id','id');
     }
+
+    public function semester(){
+        return $this->majorSubject->semester;
+    }
 }

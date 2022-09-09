@@ -12,6 +12,7 @@ use App\Models\Classs;
 use App\Models\Faculty;
 use App\Models\Lecturer;
 use App\Models\Major;
+use App\Models\MajorSubject;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -295,9 +296,11 @@ class FacultyClassController extends Controller
                 'message' => $exception->getMessage(),
             ]);
         }
+        $major_id = Classs::find($id)->major_id;
+        $majorSubject = MajorSubject::where(['major_id'=>$major_id,'subject_id' => $data['subject_id'], 'semester' => $data['semester']])->first()->id;
         try {
             Assignment::updateOrCreate(
-                ['class_id' => $id, 'subject_id' => $data['subject_id'], 'semester' => $data['semester']],
+                ['class_id' => $id, 'major-subject_id' => $majorSubject],
                 ['lecturer_id' => $data['lecturer_id']]
             );
         }

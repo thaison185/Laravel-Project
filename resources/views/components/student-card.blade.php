@@ -11,10 +11,13 @@
                         Email: {{$email}}<br>
                         <abbr title="Phone">P:</abbr> {{$phone}}
                     </div>
-                    @if(auth()->user()->role=='1')
-                        <button data-href="{{route('staff.students.delete',['id'=>$id])}}" class="btn btn-raised btn-sm btn-danger waves-effect delete-button float-right">Delete</button>
-                    @endif
                 </div>
+            </div>
+            <div class="col-12 text-right">
+                <a href="{{route('staff.performance.show',['student'=>$id])}}" class="btn btn-raised btn-sm bg-teal waves-effect">Performance</a>
+                @if(auth()->user()->role=='1')
+                    <button data-href="{{route('staff.students.delete',['id'=>$id])}}" class="btn btn-raised btn-sm btn-danger waves-effect delete-button">Delete</button>
+                @endif
             </div>
         </div>
     </div>

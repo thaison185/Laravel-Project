@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Staff\FacultyClassController;
 use App\Http\Controllers\Staff\LecturerController;
+use App\Http\Controllers\Staff\PerformanceController;
 use App\Http\Controllers\Staff\StudentController;
 use App\Http\Controllers\Staff\StaffController;
 use App\Http\Controllers\Staff\SubjectMajorController;
@@ -120,6 +121,13 @@ Route::prefix('staff')->middleware('auth:staff')->name('staff.')->group(function
         Route::post('/class/{id}/assignment',[FacultyClassController::class,'assignment'])->name('assignment');
     });
 
+    Route::group([
+        'as' => 'performance.',
+        'prefix' => 'performance',
+    ], static function(){
+//        Route::get('/faculties',[FacultyClassController::class,'faculties'])->name('faculties');
+        Route::get('/{student}',[PerformanceController::class,'show'])->name('show');
+    });
 
 });
 

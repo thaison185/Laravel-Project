@@ -31,4 +31,22 @@ class Student extends Authenticatable
     public function major(){
         return $this->classs->major();
     }
+
+    public function performances(){
+        return $this->hasMany(AcademicPerformance::class);
+    }
+
+    public function performance($assignment){
+        return $this->performances->where('assignment_id',$assignment)->first();
+    }
+
+    public function assignmentsInSemester($semester){
+        $return = [];
+        foreach($this->classs->assignments as $each){
+            if ($each->semester() === $semester){
+                $return[] = $each;
+            }
+        }
+        return collect($return);
+    }
 }
