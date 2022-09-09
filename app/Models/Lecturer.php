@@ -15,6 +15,19 @@ class Lecturer extends Authenticatable
         return $this->belongsTo(Faculty::class);
     }
 
+    public function assignments(){
+        return $this->hasMany(Assignment::class);
+    }
+
+    public function majorSubjects(){
+        return $this->hasManyThrough(MajorSubject::class,Assignment::class,'lecturer_id','id','id','major-subject_id');
+    }
+
+    public function subjects(){
+        if(!$this->majorSubjects->isEmpty()) return $this->majorSubjects->toQuery()->distinct()->get('subject_id');
+        return null;
+    }
+
     protected $fillable = [
         'name',
         'email',

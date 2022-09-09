@@ -40,6 +40,10 @@
             z-index: 2;
             position: relative;
         }
+
+        .pill {
+            border-radius: 10rem!important;
+        }
     </style>
 @endpush
 
@@ -108,7 +112,36 @@
                         <div class="header">
                             <h2>Subjects & Classes</h2>
                         </div>
-                        <div class="body">
+                        <div class="body" id="reload-assignment">
+                            <ul class="list-group" id="assignment">
+                                @foreach($subjectClass as $each)
+                                    <li class="list-group-item d-flex justify-content-between align-items-center accordion-toggle"
+                                        role="button" data-toggle="collapse" data-target="#target{{$each['name']->id}}">
+                                        {{$each['name']->name}}
+                                        <span class="badge bg-pink pill px-2">{{$each['assignments']->count()}}</span>
+                                        <div class="col-12 accordian-body collapse" id="target{{$each['name']->id}}">
+                                            <ul>
+                                                @foreach($each['assignments'] as $assignment)
+                                                    <li>
+                                                        Class: {{$assignment->classs->name}} ; Semester: {{$assignment->majorSubject->semester}}
+                                                    </li>
+                                                @endforeach
+                                                <li class="text-center" style="list-style: none">
+                                                    <button type="button" class="btn btn-sm btn-raised waves-effect g-bg-blush2 add-btn"
+                                                            data-subject_id="{{$each['name']->id}}"
+                                                            data-subject_name="{{$each['name']->name}}"
+                                                            data-majors="{{$allMajorSubjects->where('subject_id',$each['name']->id)->pluck('major.name','major.id')}}"
+                                                            data-semesters="{{$allMajorSubjects->where('subject_id',$each['name']->id)->pluck('semester','major_id')}}"
+                                                            data-classes="{{$allClasses->whereIn('major_id',$allMajorSubjects->where('subject_id',$each['name']->id)->pluck('major.id'))}}">
+                                                        <i class="material-icons m-b-5">add</i>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                @endforeach
+                                    <li class="list-group-item d-flex justify-content-center align-items-center" role="button"><div class="font-30">+</div></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -255,14 +288,14 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="password" class="form-control" placeholder="New Password" id="new-password" name="new-pass" required>
+                                    <input type="password" class="form-control text-white" placeholder="New Password" id="new-password" name="new-pass" required>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="password" class="form-control" placeholder="Confirm New Password" name="confirm" required>
+                                    <input type="password" class="form-control text-white" placeholder="Confirm New Password" name="confirm" required>
                                 </div>
                             </div>
                         </div>
@@ -274,6 +307,63 @@
                 </div>
             </div>
         </div>
+        </form>
+    </div>
+
+    <div class="modal fade" id="AssignmentModal" tabindex="-1" role="dialog">
+        <form action="{{route('staff.lecturers.assignment',['id'=>$lecturer->id])}}" method="post" id="assignment-form">
+            @csrf
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content modal-col-cyan">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Assignment</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row clearfix">
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select class="form-control show-tick col-amber" name="major_id" id="select-major" required>
+                                            <option value="" class="text-black">--Major--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select class="form-control show-tick col-amber" name="subject_id" id="select-subject" required>
+                                            <option value="">--Subject--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select class="form-control show-tick col-amber" name="class_id" id="select-class" required>
+                                            <option value="">--Class--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select class="form-control show-tick col-amber" name="semester" id="select-semester" required>
+                                            <option value="">--Semester--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                        <button type="reset" class="btn btn-link waves-effect" data-dismiss="modal" id="close-assignment">CLOSE</button>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 @endsection
@@ -290,6 +380,40 @@
     <script src="{{asset('staff-asset/plugins/bootstrap-notify/bootstrap-notify.js')}}"></script>
     <script src="{{asset('/staff-asset/js/pages/ui/notifications.js')}}"></script>
 
+    {{--    Assignment Modal    --}}
+    <script>
+        $(function (){
+            $(document).on('click','.add-btn',function (e){
+                e.preventDefault();
+                e.stopPropagation();
+                let majors = $(this).data('majors');
+                let classes = $(this).data('classes');
+                let semesters = $(this).data('semesters');
+                $('#AssignmentModal').modal('show');
+                Object.entries(majors).forEach(entry=>{
+                    const [key,value] = entry;
+                    $('#select-major').append($("<option value='"+key+"'>"+value+"</option>"));
+                });
+                $('#select-subject').append($("<option value='"+$(this).data('subject_id')+"' selected>"+$(this).data('subject_name')+"</option>"));
+                $('#select-major').on('change',function (){
+                    $('#select-class').find('option:not(:first)').remove();
+                    $('#select-semester').find('option:not(:first)').remove();
+                    let selected = $('#select-major').children('option:selected').val();
+                    classes.forEach(function (each){
+                       if(each['major_id']==selected) {
+                           $('#select-class').attr('data-semesters',semesters[each['major']['degree']]);
+                           $('#select-class').append($("<option value='"+each['id']+"'>"+each['name']+"</option>"));
+                       }
+                    });
+                    Object.entries(semesters).forEach(entry=>{
+                        const [key,value] = entry;
+                        if(key==selected) $('#select-semester').append($("<option value='"+value+"'>"+value+"</option>"));
+                    });
+                });
+            })
+        })
+    </script>
+
     {{--    Reset field     --}}
     <script>
         $(function (){
@@ -298,6 +422,17 @@
                 $("#imageResult").attr('src','#');
                 $("#upload-label").html('Choose Avatar');
            });
+        });
+
+        $(function (){
+            $("#AssignmentModal").on('hide.bs.modal', function (){
+                $(this).find('form')[0].reset();
+                $(this).find('option').each(function (){
+                    if ($(this).val() !== '') {
+                        $(this).remove();
+                    }
+                })
+            });
         });
 
         $(function (){
@@ -402,6 +537,18 @@
                 }
             });
 
+            $('#assignment-form').validate({
+                highlight: function (input) {
+                    $(input).parents('.form-line').addClass('error');
+                },
+                unhighlight: function (input) {
+                    $(input).parents('.form-line').removeClass('error');
+                },
+                errorPlacement: function (error, element) {
+                    $(element).parents('.form-group').append(error);
+                }
+            });
+
             $('#password-form').validate({
                 rules: {
                     'new-pass':{
@@ -492,6 +639,16 @@
                 }
             });
 
+            $("#assignment-form").submit(function(e) {
+                e.preventDefault();
+                let actURL = $(this).attr("action");
+                const formData = new FormData(this);
+                formData.append('type','assignment');
+                if($(this).valid()){
+                    callAJAX(actURL,formData,'assignment');
+                }
+            });
+
             function callAJAX(actURL,formData,type='basic'){
                 $.ajax({
                     type: "POST",
@@ -503,7 +660,8 @@
                             if(type!=='basic')  $("#close-"+type).click();
                             showNotification('g-bg-cgreen',response.message,'top','center','animated fadeInDown','animated fadeOutDown');
                             if(response.avatar) $("#avatar-thumb").attr('src',`{{asset('storage')}}/${response.avatar}`);
-                            $('#reload').load(document.URL +  ' #basic-info');
+                            if(type!=='assignment') $('#reload').load(document.URL +  ' #basic-info');
+                            else $('#reload-assignment').load(document.URL +  ' #assignment');
                         }else{
                             showNotification('g-bg-soundcloud',response.message,'top','center','animated zoomInDown','animated zoomOutUp');
                         }

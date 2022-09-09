@@ -7,6 +7,7 @@ use App\Http\Requests\AssignmentRequest;
 use App\Http\Requests\ClassRequest;
 use App\Http\Requests\DeleteRequest;
 use App\Http\Requests\FacultyRequest;
+use App\Models\AcademicPerformance;
 use App\Models\Assignment;
 use App\Models\Classs;
 use App\Models\Faculty;
@@ -249,7 +250,10 @@ class FacultyClassController extends Controller
 
         if($request->get('type')==='force'){
             try{
+                $student_ids = Student::where('class_id',$id)->get()->modelKeys();
                 Student::where('class_id',$id)->delete();
+                AcademicPerformance::whereIn('student_id',$student_ids)->delete();
+                Assignment::where('class_id',$id)->delete();
             }catch(\Throwable $exception){
                 return response()->json([
                     'status' => 'error',

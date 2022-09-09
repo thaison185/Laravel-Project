@@ -52,6 +52,7 @@ Route::prefix('staff')->middleware('auth:staff')->name('staff.')->group(function
         Route::get('import',[LecturerController::class,'importIndex'])->name('import-index');
         Route::post('import',[LecturerController::class,'import'])->name('import');
         Route::post('{id}/delete',[LecturerController::class,'delete'])->name('delete');
+        Route::post('{id}/assignment',[LecturerController::class,'assignment'])->name('assignment');
     });
 
     Route::group([

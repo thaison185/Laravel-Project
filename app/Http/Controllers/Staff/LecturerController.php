@@ -5,11 +5,17 @@ namespace App\Http\Controllers\Staff;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DeleteRequest;
 use App\Http\Requests\ImportRequest;
+use App\Http\Requests\LecturerAssignmentRequest;
 use App\Http\Requests\StoreLecturerRequest;
 use App\Http\Requests\UpdateLecturerRequest;
 use App\Imports\LecturersImport;
+use App\Models\Assignment;
+use App\Models\Classs;
 use App\Models\Faculty;
 use App\Models\Lecturer;
+use App\Models\Major;
+use App\Models\MajorSubject;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -173,10 +179,26 @@ class LecturerController extends Controller
     }
 
     public function profile($id){
-        $lecturer = Lecturer::find($id);
+        $lecturer = Lecturer::with('assignments.majorSubject.subject')->find($id);
+        $subjectClass = [];
+        if($lecturer->subjects()!==null) {
+            foreach ($lecturer->subjects() as $each){
+                $name = Subject::find($each->subject_id);
+                $majorSubjects = MajorSubject::where('subject_id',$each->subject_id)->get();
+                $assignments= Assignment::with(['classs','majorSubject.major'])->whereIn('major-subject_id',$majorSubjects->modelKeys())->get();
+                $subjectClass[] =['name'=>$name,'assignments'=>$assignments];
+            }
+        }
+        $allMajors = Major::where('faculty_id',$lecturer->faculty_id)->get();
+        $allClasses = Classs::with('major')->whereIn('major_id',$allMajors->modelKeys())->get();
+        $allMajorSubjects = MajorSubject::with(['subject','major'])->whereIn('major_id',$allMajors->modelKeys())->orderBy('subject_id')->get();
         return view('staff.lecturers.profile',[
             'lecturer' => $lecturer,
             'focus' => 'lecturers',
+            'subjectClass' => $subjectClass,
+            'allMajors' => $allMajors,
+            'allMajorSubjects' => $allMajorSubjects,
+            'allClasses'=>$allClasses,
         ]);
     }
 
@@ -293,5 +315,67 @@ class LecturerController extends Controller
             'status' => 'success',
             'message' => 'Lecturer ID='.$id." deleted!",
         ];
+    }
+
+    public function assignment(LecturerAssignmentRequest $request,$id){
+        try{
+            $data = $request->validated();
+        }catch(\Throwable $exception){
+            return response()->json([
+                'status' => 'error',
+                'message' => $exception->getMessage(),
+            ]);
+        }
+        try{$lecturer = Lecturer::find($id);}
+        catch(\Throwable $exception){
+            return response()->json([
+                'status' => 'error',
+                'message' => "Can't find Lecturer ID=".$id,
+            ]);
+        }
+
+        $allMajors = Major::where('faculty_id',$lecturer->faculty_id)->get();
+        if(!$allMajors->contains('id',$data['major_id']))
+            return response()->json([
+            'status' => 'error',
+            'message' => "Major is invalid",
+        ]);
+
+        $allClasses = Classs::where('major_id',$data['major_id'])->get();
+        if(!$allClasses->contains('id',$data['class_id']))
+            return response()->json([
+                'status' => 'error',
+                'message' => "Class is invalid",
+            ]);
+
+        $allMajorSubjects = MajorSubject::where('major_id',$data['major_id'])->get();
+        if(!$allMajorSubjects->contains('subject_id',$data['subject_id']))
+            return response()->json([
+                'status' => 'error',
+                'message' => "Subject is invalid",
+            ]);
+
+        if(!$allMajorSubjects->where('subject_id',$data['subject_id'])->contains('semester',$data['semester']))
+            return response()->json([
+                'status' => 'error',
+                'message' => "Semester is invalid",
+            ]);
+        $majorSubject = MajorSubject::where(['major_id'=>$data['major_id'],'subject_id'=>$data['subject_id'],'semester'=>$data['semester']])->first()->id;
+        try{
+            Assignment::create([
+                'lecturer_id'=>$id,
+                'class_id'=>$data['class_id'],
+                'major-subject_id'=>$majorSubject,
+            ]);
+        }catch (\Throwable $exception){
+            return response()->json([
+                'status' => 'error',
+                'message' => $exception->getMessage(),
+            ]);
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Assignment created!',
+        ]);
     }
 }
