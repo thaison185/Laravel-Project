@@ -110,21 +110,21 @@
                             <div class="col-md-4 col-sm-12">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="text" class="form-control" name="last-name" placeholder="Last Name" required>
+                                        <input type="text" class="form-control text-white" name="last-name" placeholder="Last Name" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4 col-sm-12">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="text" class="form-control" name="first-name" placeholder="First Name" required>
+                                        <input type="text" class="form-control text-white" name="first-name" placeholder="First Name" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-2 col-sm-6">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <select class="form-control show-tick" name="gender" required>
+                                        <select class="form-control show-tick text-white" name="gender" required>
                                             <option value="">--Gender--</option>
                                             <option value="1">Male</option>
                                             <option value="0">Female</option>
@@ -135,7 +135,7 @@
                             <div class="col-md-2 col-sm-6">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <select class="form-control show-tick" name="role" required>
+                                        <select class="form-control show-tick text-white" name="role" required>
                                             <option value="">--Role--</option>
                                             <option value="1">Administrator</option>
                                             <option value="0">Staff</option>
@@ -167,14 +167,14 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="password" class="form-control" placeholder="New Password" id="new-password" name="new-pass">
+                                        <input type="password" class="form-control text-white" placeholder="New Password" id="new-password" name="new-pass">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="password" class="form-control" placeholder="Confirm New Password" id="confirm" name="confirm">
+                                        <input type="password" class="form-control text-white" placeholder="Confirm New Password" id="confirm" name="confirm">
                                     </div>
                                 </div>
                             </div>
@@ -230,7 +230,7 @@
                 modal.find('.append-here').append($('<input type="hidden" name="type" value="add" class="type">'));
                 $('#new-password').prop('required',true);
                 $('#confirm').prop('required',true);
-                modal.find('.append-here').append($('<div class="col-sm-12 email-here"><div class="form-group"><div class="form-line"><input type="email" class="form-control g-bg-" placeholder="Email" name="email" required></div></div></div>'));
+                modal.find('.append-here').append($('<div class="col-sm-12 email-here"><div class="form-group"><div class="form-line"><input type="email" class="form-control text-white" placeholder="Email" name="email" required></div></div></div>'));
             }
         })
     </script>

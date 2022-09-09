@@ -117,14 +117,14 @@
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="text" class="form-control" name="admission_year" placeholder="Admission Year" required>
+                                        <input type="text" class="form-control text-white" name="admission_year" placeholder="Admission Year" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4 col-sm-8" id="select-major">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <select class="form-control show-tick" name="major_id" required id="select-major">
+                                        <select class="form-control show-tick text-white" name="major_id" required id="select-major">
                                             <option value="">--Major--</option>
                                             @foreach($majors as $major)
                                                 <option value="{{$major->id}}"> {{$major->id.'. '.$major->name}}</option>

@@ -169,14 +169,14 @@
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="text" class="form-control" name="name" placeholder="Name" required>
+                                        <input type="text" class="form-control text-white" name="name" placeholder="Name" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-2 col-sm-4" id="select-degree">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <select class="form-control show-tick" name="degree" required>
+                                        <select class="form-control show-tick text-white" name="degree" required>
                                             <option value="">--Degree--</option>
                                             <option value="0"> 0.Bachelor</option>
                                             <option value="1"> 1.Engineer</option>
@@ -189,7 +189,7 @@
                             <div class="col-md-4 col-sm-8" id="select-faculty">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <select class="form-control show-tick" name="faculty_id" required>
+                                        <select class="form-control show-tick text-white" name="faculty_id" required>
                                             <option value="">--Faculty--</option>
                                             @foreach($faculties as $faculty)
                                                 <option value="{{$faculty->id}}"> {{$faculty->id.'. '.$faculty->name}}</option>
@@ -201,7 +201,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <textarea rows="4" class="form-control no-resize" placeholder="Description..." name="description"></textarea>
+                                        <textarea rows="4" class="form-control no-resize text-white" placeholder="Description..." name="description"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -229,7 +229,7 @@
                             <div class="col-md-6 col-sm-6" id="select-subject">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <select class="form-control show-tick" name="subject_id" required>
+                                        <select class="form-control show-tick text-white" name="subject_id" required>
                                             <option value="">--Subject--</option>
                                             @foreach($subjects as $subject)
                                                 <option value="{{$subject->id}}"> {{$subject->id.'. '.$subject->name}}</option>
@@ -241,7 +241,7 @@
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="number" class="form-control" name="lecture_hour" placeholder="Lecture Hour" min="70" max="300" required>
+                                        <input type="number" class="form-control text-white" name="lecture_hour" placeholder="Lecture Hour" min="70" max="300" required>
                                     </div>
                                 </div>
                             </div>

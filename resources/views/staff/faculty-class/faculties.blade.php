@@ -78,7 +78,7 @@
     <div class="modal fade" id="Modal" tabindex="-1" role="dialog">
         <form method="post" id="update-form" enctype="multipart/form-data">
             @csrf
-            <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content modal-col-blue-grey">
                     <div class="modal-header">
                         <h4 class="modal-title" id="defaultModalLabel"></h4>
@@ -88,14 +88,14 @@
                             <div class="col-md-12 col-sm-12">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="text" class="form-control" name="name" placeholder="Name" required>
+                                        <input type="text" class="form-control text-white" name="name" placeholder="Name" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <textarea rows="4" class="form-control no-resize" placeholder="Description..." name="description"></textarea>
+                                        <textarea rows="4" class="form-control no-resize text-white" placeholder="Description..." name="description"></textarea>
                                     </div>
                                 </div>
                             </div>
