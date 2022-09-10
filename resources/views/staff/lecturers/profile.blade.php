@@ -140,7 +140,7 @@
                                         </div>
                                     </li>
                                 @endforeach
-                                    <li class="list-group-item d-flex justify-content-center align-items-center" role="button"><div class="font-30">+</div></li>
+                                    <li class="list-group-item d-flex justify-content-center align-items-center" id="add-btn" role="button"><div class="font-30">+</div></li>
                             </ul>
                         </div>
                     </div>
@@ -396,21 +396,64 @@
                 });
                 $('#select-subject').append($("<option value='"+$(this).data('subject_id')+"' selected>"+$(this).data('subject_name')+"</option>"));
                 $('#select-major').on('change',function (){
+                    let major = $('#select-major').children('option:selected').val();
                     $('#select-class').find('option:not(:first)').remove();
                     $('#select-semester').find('option:not(:first)').remove();
-                    let selected = $('#select-major').children('option:selected').val();
                     classes.forEach(function (each){
-                       if(each['major_id']==selected) {
-                           $('#select-class').attr('data-semesters',semesters[each['major']['degree']]);
-                           $('#select-class').append($("<option value='"+each['id']+"'>"+each['name']+"</option>"));
-                       }
+                        if(each['major_id']==major) {
+                            $('#select-class').attr('data-semesters',semesters[each['major']['degree']]);
+                            $('#select-class').append($("<option value='"+each['id']+"'>"+each['name']+"</option>"));
+                        }
                     });
                     Object.entries(semesters).forEach(entry=>{
                         const [key,value] = entry;
-                        if(key==selected) $('#select-semester').append($("<option value='"+value+"'>"+value+"</option>"));
+                        if(key==major) $('#select-semester').append($("<option value='"+value+"'>"+value+"</option>"));
                     });
                 });
             })
+
+            $(document).on('click','#add-btn',function (){
+                let majors = @json($allMajors);
+                let classes = @json($allClasses);
+                let majorSubjects = @json($allMajorSubjects);
+                $('#AssignmentModal').modal('show');
+                majors.forEach(function (each){
+                    $('#select-major').append($("<option value='"+each['id']+"'>"+each['name']+"</option>"));
+                });
+                $('#select-major').on('change',function (){
+                    let major = $('#select-major').children('option:selected').val();
+                    $('#select-subject').find('option:not(:first)').remove();
+                    $('#select-class').find('option:not(:first)').remove();
+                    $('#select-semester').find('option:not(:first)').remove();
+                    const subjects = getUniqueByKey(arrayFilter(majorSubjects,'major_id',major),'subject_id');
+                    subjects.forEach(each =>{
+                        $('#select-subject').append($("<option value='"+each['subject_id']+"'>"+each['subject']['name']+"</option>"));
+                    })
+                    arrayFilter(classes,'major_id',major).forEach(each=>{
+                        $('#select-class').append($("<option value='"+each['id']+"'>"+each['name']+"</option>"));
+                    })
+                });
+                $('#select-subject').on('change',function (){
+                    let major = $('#select-major').children('option:selected').val();
+                    let subject = $('#select-subject').children('option:selected').val();
+                    const filteredData =arrayFilter(arrayFilter(majorSubjects,'major_id',major),'subject_id',subject);
+                    filteredData.forEach(each=>{
+                        $('#select-semester').append($("<option value='"+each['semester']+"'>"+each['semester']+"</option>"));
+                    })
+                    if(filteredData.length == 1) $('#select-semester').find('option:not(:first)').prop('selected',true);
+                })
+            });
+
+            function getUniqueByKey(array,key){
+                return [...new Map(array.map(item =>
+                    [item[key], item])).values()];
+            }
+
+            function arrayFilter(array,key,value) {
+                return array.filter(obj => {
+                    return obj[key] == value;
+                })
+            }
         })
     </script>
 
@@ -441,7 +484,6 @@
             });
         });
     </script>
-
     {{--    Datetime Picker     --}}
     <script>
         let year = new Date().getFullYear()-22;
