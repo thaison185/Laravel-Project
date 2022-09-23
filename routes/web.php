@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\Staff\FacultyClassController;
 use App\Http\Controllers\Staff\LecturerController;
 use App\Http\Controllers\Staff\PerformanceController;
@@ -23,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/','/login');
 Route::get('login/{role?}',[LoginController::class,'show'])->name('login');
 Route::post('login',[LoginController::class,'authenticate'])->name('login-handler');
-Route::get('logout',[LoginController::class,'logout'])->name('logout');
+Route::get('logout/{role}',[LoginController::class,'logout'])->name('logout');
 
 
 // [-------------------------------STUDENT ROUTES-------------------------------]
@@ -81,16 +82,6 @@ Route::prefix('staff')->middleware('auth:staff')->name('staff.')->group(function
     });
 
     Route::group([
-        'as' => 'staff.',
-        'prefix' => 'staff',
-    ], static function(){
-        Route::get('/',[StaffController::class,'index'])->name('all');
-        Route::post('/add',[StaffController::class,'store'])->name('store');
-        Route::post('/{id}/update',[StaffController::class,'update'])->name('update');
-        Route::post('{id}/delete',[StaffController::class,'delete'])->name('delete');
-    });
-
-    Route::group([
         'as' => 'subject-major.',
         'prefix' => 'subject-major',
     ], static function(){
@@ -126,9 +117,12 @@ Route::prefix('staff')->middleware('auth:staff')->name('staff.')->group(function
         'as' => 'performance.',
         'prefix' => 'performance',
     ], static function(){
-//        Route::get('/faculties',[FacultyClassController::class,'faculties'])->name('faculties');
+        Route::get('/target/{target}/{id?}',[PerformanceController::class,'all'])->name('all');
+        Route::post('/target/{target}/{id?}',[PerformanceController::class,'analyze'])->name('analyze');
         Route::get('/{student}',[PerformanceController::class,'show'])->name('show');
     });
+
+    Route::post('/search',[SearchController::class,'search'])->name('search');
 
 });
 

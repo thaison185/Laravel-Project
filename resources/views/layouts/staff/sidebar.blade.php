@@ -12,7 +12,7 @@
                 <h3>{{auth()->user()->name}}</h3>
                 <ul>
                     <li><a data-placement="bottom" title="Go to Profile" href=""><i class="zmdi zmdi-account"></i></a></li>
-                    <li><a data-placement="bottom" title="Sign out" href="{{route('logout')}}" ><i class="zmdi zmdi-sign-in"></i></a></li>
+                    <li><a data-placement="bottom" title="Sign out" href="{{route('logout',['role'=>'staff'])}}" ><i class="zmdi zmdi-sign-in"></i></a></li>
                 </ul>
             </div>
         </div>
@@ -52,6 +52,8 @@
                     <ul class="ml-menu">
                         <li id="staff"><a href="{{route('staff.staff.all')}}">All Staff</a></li>
                     </ul>
+                </li>
+                <li id="performances"><a href="{{route('staff.performance.all',['target','all'])}}"><i class="zmdi zmdi-check-all"></i><span>Academic Performance</span> </a>
                 </li>
                 <li class="about"><a href="centres.html"><i class="zmdi zmdi-pin"></i><span>About University</span></a></li>
             </ul>

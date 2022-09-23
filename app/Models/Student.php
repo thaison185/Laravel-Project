@@ -49,4 +49,21 @@ class Student extends Authenticatable
         }
         return collect($return);
     }
+
+    public function status($semester,$subject=null){
+        $assignments = $this->assignmentsInSemester($semester);
+        if($subject!=null){
+            $majorSubjects = MajorSubject::where('subject_id',$subject)->get();
+            $assignments = $assignments->whereIn('major-subject_id',$majorSubjects->modelKeys());
+        }else{if($assignments->isEmpty()) return -2;}
+        foreach($assignments as $assignment){
+            if($this->performance($assignment->id) == null) return 0;
+            if($this->performance($assignment->id)->score < 6) return -1;
+        }
+        return 1;
+    }
+
+    public function average($semester=null){
+        $assignments = $this->assignmentsInSemester($semester);
+    }
 }

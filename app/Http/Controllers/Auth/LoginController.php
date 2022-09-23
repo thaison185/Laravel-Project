@@ -36,7 +36,7 @@ class LoginController extends Controller
             if (Auth::guard($role)->attempt($credentials,$remember)) {
                 $request->session()->regenerate();
                 $request->session()->put('role',$role);
-                return redirect(route($role.'.home'));
+                return redirect()->intended(route($role.'.home'));
             }
 
             return back()->withErrors([
@@ -50,7 +50,7 @@ class LoginController extends Controller
         }
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request,$role)
     {
         Auth::logout();
 
@@ -58,6 +58,6 @@ class LoginController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect('/login/'.$role);
     }
 }
